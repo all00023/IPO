@@ -55,6 +55,81 @@ public class producto {
         }
 
     }
+    
+    public producto(int _cod_barras, String url) throws SQLException, IOException {
+
+
+        URL urlpagina = null;
+        InputStreamReader isr = null;
+        BufferedReader br = null;
+        String linea = "";
+
+
+        urlpagina = new URL("http://www.logista.es/LogistaWeb_v2/tarifario/detalleArticulo.asp?hidCodArt=" + _cod_barras);
+        isr = new InputStreamReader(urlpagina.openStream());
+        br = new BufferedReader(isr);
+
+
+        if (isr.ready()) {
+
+            this.cod_barras = _cod_barras;
+            int corte;
+
+            while (linea.indexOf("foto_artic") == -1) {
+                linea = br.readLine();
+            }
+
+            corte = linea.indexOf("\"");
+            url = "http://www.logista.es/LogistaWeb_v2/tarifario/" + linea.substring(corte + 1, linea.indexOf("\"", corte + 1));
+            url.replaceAll("/../..", "");
+
+            while ((linea = br.readLine()) != null && linea.indexOf("nombrecampo") == -1) {
+            }
+
+
+            while (linea.indexOf("contenidotabla") == -1) {
+                linea = br.readLine();
+            }
+            corte = linea.indexOf(";");
+            this.nombre = linea.substring(corte + 1, linea.indexOf("<", corte));
+
+            while ((linea = br.readLine()) != null && linea.indexOf("nombrecampo") == -1) {
+            }
+
+            while (linea.indexOf("contenidotabla") == -1) {
+                linea = br.readLine();
+            }
+            corte = linea.indexOf(";");
+            this.formato = linea.substring(corte + 1, linea.indexOf("<", corte));
+
+            while ((linea = br.readLine()) != null && linea.indexOf("nombrecampo") == -1) {
+            }
+            while ((linea = br.readLine()) != null && linea.indexOf("nombrecampo") == -1) {
+            }
+            while ((linea = br.readLine()) != null && linea.indexOf("nombrecampo") == -1) {
+            }
+
+            while (linea.indexOf("contenidotabla") == -1) {
+                linea = br.readLine();
+            }
+            corte = linea.indexOf(">");
+            if (linea.substring(corte + 1, linea.indexOf(" ", corte)) == "A") {
+                this.precio = Float.parseFloat(linea.substring(corte + 1, linea.indexOf(" ", corte)));
+            } else {
+                this.precio = (float) 0.0;
+            }
+
+            this.stock = 0;
+            this.stock_minimo = 0;
+
+
+        } else {
+            cod_barras = -1;
+        }
+        br.close();
+        isr.close();
+
+    }
 
     public void insertar() throws SQLException {
 
