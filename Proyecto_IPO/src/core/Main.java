@@ -79,7 +79,7 @@ public class Main {
         PPal principal=new PPal();
         principal.setEnabled(true);
         principal.setVisible(true);
-        
+       
         
     
     }

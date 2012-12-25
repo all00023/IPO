@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -263,18 +264,9 @@ public class EliminarArticulo extends javax.swing.JDialog {
             Tnombre.setText(p.getNombre());
             Tprecio.setText(String.valueOf(p.getPrecio()));
                         
-            
-            InputStream n = ImageIcon.class.getResourceAsStream("/Imagenes/" + p.getCod_barras() + ".jpg");
-            
-            
-
-
-            try {
-
-                imagen = ImageIO.read(n);
-            } catch (IOException ex) {
-                Logger.getLogger(EliminarArticulo.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String ruta="Imagenes/" + p.getCod_barras() + ".jpg";
+           
+    imagen = new ImageIcon(ruta).getImage();
 
             Graphics g = canvas1.getGraphics();
 

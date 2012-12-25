@@ -7,6 +7,11 @@ package core;
 import Operaciones.Operaciones;
 import gui.Panel;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,7 +61,7 @@ public class producto {
 
     }
     
-    public producto(int _cod_barras, String url) throws SQLException, IOException {
+    public producto(int _cod_barras, String url) throws SQLException, MalformedURLException, IOException {
 
 
         URL urlpagina = null;
@@ -289,6 +294,40 @@ public class producto {
     public producto() {
     }
     
+	    public String getImageUrl() throws MalformedURLException, IOException {
+
+
+
+        String url="";
+        URL urlpagina = null;
+        InputStreamReader isr = null;
+        BufferedReader br = null;
+        String linea = "";
+
+
+        urlpagina = new URL("http://www.logista.es/LogistaWeb_v2/tarifario/detalleArticulo.asp?hidCodArt=" + this.cod_barras);
+        isr = new InputStreamReader(urlpagina.openStream());
+        br = new BufferedReader(isr);
+
+
+        if (isr.ready()) {
+
+            int corte;
+
+            while (linea.indexOf("foto_artic") == -1) {
+                linea = br.readLine();
+            }
+
+            corte = linea.indexOf("\"");
+            url = "http://www.logista.es/LogistaWeb_v2/tarifario/" + linea.substring(corte + 1, linea.indexOf("\"", corte + 1));
+
+            
+        }
+        br.close();
+        isr.close();
+
+        return url;
+    }
     
     
     @Override
