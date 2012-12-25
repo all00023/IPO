@@ -25,12 +25,14 @@ public class PPal extends javax.swing.JFrame {
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
     }
-private void centrarVentana(){
-    Toolkit tk=Toolkit.getDefaultToolkit();
-    int x=(int)tk.getScreenSize().getWidth();
-    int y=(int)tk.getScreenSize().getHeight();
-    setLocation((x)/2, ((y)/2));  
-} 
+    
+    
+    private void centrarVentana(){
+        Toolkit tk=Toolkit.getDefaultToolkit();
+        int x=(int)tk.getScreenSize().getWidth();
+        int y=(int)tk.getScreenSize().getHeight();
+        setLocation((x)/2, ((y)/2));  
+    } 
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,6 +74,21 @@ private void centrarVentana(){
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Ppal"); // NOI18N
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
+        addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                formPropertyChange(evt);
+            }
+        });
 
         Bar_Herramientas.setFloatable(false);
 
@@ -261,6 +278,23 @@ private void centrarVentana(){
     private void cmd_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_buscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmd_buscarActionPerformed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+    
+    }//GEN-LAST:event_formWindowStateChanged
+
+    private void formPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_formPropertyChange
+     
+    }//GEN-LAST:event_formPropertyChange
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        int width=Panel_Capas.getWidth();
+        int height=Panel_Capas.getHeight();
+        
+        PanelVender.setSize(width, height);        
+        
+        // Tenemos que redimensionar todos los paneles aqui:
+    }//GEN-LAST:event_formComponentResized
 
     /**
      * @param args the command line arguments

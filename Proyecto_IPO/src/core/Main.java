@@ -4,18 +4,11 @@
  */
 package core;
 
-import gui.EliminarArticulo;
-import gui.EstadoStock;
-import gui.EstadoStock;
 import gui.PPal;
 import gui.Panel;
-import java.awt.Desktop;
-import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  *

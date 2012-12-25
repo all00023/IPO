@@ -5,24 +5,15 @@
 package gui;
 
 import core.producto;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.BufferedReader;
-import java.io.File;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
-import java.text.AttributedCharacterIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import sun.swing.ImageIconUIResource;
 
 /**
  *
