@@ -6,6 +6,7 @@ package core;
 
 import gui.PPal;
 import gui.Panel;
+import java.awt.AWTException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) throws IOException, SQLException, AWTException {
 
         ServerSocket SERVER_SOCKET;
         try {
