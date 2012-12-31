@@ -7,13 +7,12 @@ package gui;
 import core.producto;
 import java.awt.Color;
 import java.awt.Toolkit;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,7 +35,7 @@ public class PPal extends javax.swing.JFrame {
         centrarVentana();
         
         initComponents();
-        
+       // productos=new Vector();
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
     }
@@ -85,6 +84,8 @@ public class PPal extends javax.swing.JFrame {
         cmd_mas = new javax.swing.JButton();
         cmd_menos = new javax.swing.JButton();
         cmd_punto = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lb_total = new javax.swing.JLabel();
         PanelStock = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla_Stock = new javax.swing.JTable();
@@ -363,7 +364,10 @@ public class PPal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        cmd_0.getAccessibleContext().setAccessibleName("0");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("TOTAL");
+
+        lb_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout PanelVenderLayout = new javax.swing.GroupLayout(PanelVender);
         PanelVender.setLayout(PanelVenderLayout);
@@ -380,9 +384,14 @@ public class PPal extends javax.swing.JFrame {
                         .addComponent(cmd_buscar)
                         .addGap(23, 23, 23))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                         .addGap(26, 26, 26)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelVenderLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(lb_total, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31))))
         );
         PanelVenderLayout.setVerticalGroup(
@@ -398,10 +407,14 @@ public class PPal extends javax.swing.JFrame {
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(lb_total, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(263, Short.MAX_VALUE))
         );
 
-        PanelVender.setBounds(0, 0, 770, 450);
+        PanelVender.setBounds(0, 0, 990, 630);
         Panel_Capas.add(PanelVender, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         PanelStock.setBackground(new java.awt.Color(204, 204, 204));
@@ -529,7 +542,7 @@ public class PPal extends javax.swing.JFrame {
                     .addComponent(txt_Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmd_Buscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -807,6 +820,8 @@ public class PPal extends javax.swing.JFrame {
     private void insertarLineaVenta(producto p){
     
             DefaultTableModel temp = (DefaultTableModel) Tabla_Vender.getModel();
+            listaVender.add(p);
+            
             Object[] fila = new Object[5];
             boolean existe=false;
             int n=temp.getRowCount();
@@ -833,6 +848,7 @@ public class PPal extends javax.swing.JFrame {
 
                 temp.addRow(fila);
             }
+            calcularPrecio();
         
     }
     
@@ -888,6 +904,17 @@ public class PPal extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void calcularPrecio(){
+        float precio=0;
+        for (int i=0; i<listaVender.size(); i++){
+            producto p=(producto)listaVender.get(i);
+            precio+=p.getPrecio();
+        }
+        lb_total.setText(""+precio+" €");
+    }
+    
+    private Vector productos;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar Bar_Herramientas;
     private javax.swing.JPanel PanelStock;
@@ -918,12 +945,14 @@ public class PPal extends javax.swing.JFrame {
     private javax.swing.JButton cmd_vender;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JLabel lb_total;
     private javax.swing.JTextField txt_Busqueda;
     private javax.swing.JTextField txt_insertar;
     // End of variables declaration//GEN-END:variables
