@@ -4,7 +4,7 @@
  */
 package gui;
 
-import core.producto;
+import core.Producto;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -25,7 +25,7 @@ public class EliminarArticulo extends javax.swing.JDialog {
      * Creates new form EliminarArticulo
      */
     
-    producto p=null;
+    Producto p=null;
     Image imagen = null;
     int x=0, y=0;
     
@@ -246,7 +246,7 @@ public class EliminarArticulo extends javax.swing.JDialog {
         if (!Tbusqueda.getText().equals("") || Tbusqueda.getText().equals("Búsqueda")) {
 
             try {
-                p = new producto(Integer.parseInt(Tbusqueda.getText()));
+                p = new Producto(Integer.parseInt(Tbusqueda.getText()));
             } catch (SQLException ex) {
                 Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -314,7 +314,7 @@ public class EliminarArticulo extends javax.swing.JDialog {
     private void BeliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BeliminarActionPerformed
         
         if(p!=null){
-            producto.borrarDB(p.getCod_barras());
+            Producto.borrarDB(p.getCod_barras());
             Econfirmacion.setVisible(true);
             p=null;
         }

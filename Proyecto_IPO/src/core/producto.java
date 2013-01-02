@@ -6,8 +6,15 @@ package core;
 
 import Operaciones.Operaciones;
 import gui.Panel;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.awt.image.PixelGrabber;
+import java.awt.image.WritableRaster;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -15,19 +22,21 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author Adrian
  */
-public class producto {
+public class Producto {
 
-    private int cod_barras, stock, stock_minimo;
+    private int cod_barras, stock, stock_minimo, nVentas;
     private String nombre, formato;
     private float precio;
 
-    public producto(int cod_barras, String nombre, float precio, int stock,
-            int stock_minimo, String formato) {
+    public Producto(int cod_barras, String nombre, float precio, int stock,
+            int stock_minimo, String formato, int nVentas) {
 
         this.cod_barras = cod_barras;
         this.stock = stock;
@@ -35,9 +44,10 @@ public class producto {
         this.nombre = nombre;
         this.formato = formato;
         this.precio = precio;
+        this.nVentas = nVentas;
     }
 
-    public producto(int cod_barras) throws SQLException {
+    public Producto(int cod_barras) throws SQLException {
 
         Operaciones db = new Operaciones("..\\Base de Datos\\TPV");
 
@@ -51,6 +61,7 @@ public class producto {
             stock = resultados.getInt("stock");
             stock_minimo = resultados.getInt("stock_minimo");
             formato = resultados.getString("formato");
+            nVentas = resultados.getInt("nVentas");
         } else {
 
             Panel.error("ERROR", "No existe el producto.");
@@ -60,7 +71,7 @@ public class producto {
 
     }
     
-    public producto(int _cod_barras, String url) throws SQLException, MalformedURLException, IOException {
+    public Producto(int _cod_barras, String url) throws SQLException, MalformedURLException, IOException {
 
 
         URL urlpagina = null;
@@ -125,6 +136,7 @@ public class producto {
 
             this.stock = 0;
             this.stock_minimo = 0;
+            this.nVentas=0;
 
 
         } else {
@@ -145,7 +157,7 @@ public class producto {
             Panel.error("ERROR", "El producto ya existe en la Base de Datos.");
         } else {
             db.insertar("INSERT INTO productos VALUES (" + cod_barras + ",'" + nombre + "',"
-                    + precio + "," + stock + "," + stock_minimo + ",'" + formato + "')");
+                    + precio + "," + stock + "," + stock_minimo + ",'" + formato + "'," + nVentas +")");
         }
     }
 
@@ -155,7 +167,7 @@ public class producto {
 
         String aux = "UPDATE productos SET nombre='" + nombre + "',precio=" + precio
                 + ",stock=" + stock + ",stock_minimo=" + stock_minimo + ",formato='" + formato
-                + "' WHERE cod_barras=" + cod_barras;
+                + "' WHERE cod_barras=" + cod_barras +","+ nVentas;
 
         db.insertar(aux);
 
@@ -185,6 +197,11 @@ public class producto {
         this.stock_minimo = stock_minimo;
     }
 
+    public void setnVentas(int nVentas) {
+        this.nVentas = nVentas;
+    }
+    
+
     public int getCod_barras() {
         return cod_barras;
     }
@@ -209,6 +226,10 @@ public class producto {
         return stock_minimo;
     }
 
+    public int getnVentas() {
+        return nVentas;
+    }
+
     public static void borrarDB(int codibarra) {
 
         Operaciones db = new Operaciones("..\\Base de Datos\\TPV");
@@ -217,22 +238,22 @@ public class producto {
 
     }
 
-    public static ArrayList<producto> consultarStock() throws SQLException {
+    public static ArrayList<Producto> consultarStock() throws SQLException {
 
         Operaciones db = new Operaciones("..\\Base de Datos\\TPV");
         ResultSet resultados = db.consultar("SELECT * "
                 + "FROM productos WHERE stock<=stock_minimo");
 
-        ArrayList<producto> lista = new ArrayList<>();
+        ArrayList<Producto> lista = new ArrayList<>();
 
         resultados.next();
 
         if (!resultados.isClosed()) {
 
             while (!resultados.isAfterLast()) {
-                lista.add(new producto(resultados.getInt("cod_barras"), resultados.getString("nombre"),
+                lista.add(new Producto(resultados.getInt("cod_barras"), resultados.getString("nombre"),
                         resultados.getFloat("precio"), resultados.getInt("stock"), resultados.getInt("stock_minimo"),
-                        resultados.getString("formato")));
+                        resultados.getString("formato"),resultados.getInt("nVentas")));
                 resultados.next();
             }
         }
@@ -241,24 +262,21 @@ public class producto {
 
     }
 
-    static void actualizarStock(ArrayList<producto> lista) {
-    }
-
-    public static ArrayList<producto> consultarTodoStock() throws SQLException {
+    public static ArrayList<Producto> consultarTodoStock() throws SQLException {
 
         Operaciones db = new Operaciones("..\\Base de Datos\\TPV");
         ResultSet resultados = db.consultar("SELECT * FROM productos");
 
-        ArrayList<producto> lista = new ArrayList<>();
+        ArrayList<Producto> lista = new ArrayList<>();
 
         resultados.next();
 
         if (!resultados.isClosed()) {
 
             while (!resultados.isAfterLast()) {
-                lista.add(new producto(resultados.getInt("cod_barras"), resultados.getString("nombre"),
+                lista.add(new Producto(resultados.getInt("cod_barras"), resultados.getString("nombre"),
                         resultados.getFloat("precio"), resultados.getInt("stock"), resultados.getInt("stock_minimo"),
-                        resultados.getString("formato")));
+                        resultados.getString("formato"), resultados.getInt("nVentas")));
                 resultados.next();
             }
         }
@@ -267,21 +285,21 @@ public class producto {
 
     }
 
-    public static ArrayList<producto> busquedaStock(String codigo) throws SQLException {
+    public static ArrayList<Producto> busquedaStock(String codigo) throws SQLException {
 
         Operaciones db = new Operaciones("..\\Base de Datos\\TPV");
         ResultSet resultados = db.consultar("SELECT * FROM productos WHERE cod_barras LIKE '%" + codigo + "%'");
 
-        ArrayList<producto> lista = new ArrayList<>();
+        ArrayList<Producto> lista = new ArrayList<>();
 
         resultados.next();
 
         if (!resultados.isClosed()) {
 
             while (!resultados.isAfterLast()) {
-                lista.add(new producto(resultados.getInt("cod_barras"), resultados.getString("nombre"),
+                lista.add(new Producto(resultados.getInt("cod_barras"), resultados.getString("nombre"),
                         resultados.getFloat("precio"), resultados.getInt("stock"), resultados.getInt("stock_minimo"),
-                        resultados.getString("formato")));
+                        resultados.getString("formato"), resultados.getInt("nVentas")));
                 resultados.next();
             }
         }
@@ -290,12 +308,10 @@ public class producto {
 
     }
 
-    public producto() {
+    public Producto() {
     }
     
-	    public String getImageUrl() throws MalformedURLException, IOException {
-
-
+    public String getImageUrl() throws MalformedURLException, IOException {
 
         String url="";
         URL urlpagina = null;
@@ -332,10 +348,22 @@ public class producto {
     @Override
     public boolean equals(Object o){
         
-        boolean aux =((producto)o).cod_barras==cod_barras;
+        boolean aux =((Producto)o).cod_barras==cod_barras;
         
     return aux;
     }
 
-
+    public static void guardarImagen(Image imagen, int id) throws IOException{
+     
+        String file=id + ".jpg";
+        File f=new File(file);
+        
+        BufferedImage b=new BufferedImage(imagen.getWidth(null),imagen.getHeight(null),BufferedImage.TYPE_INT_RGB);
+        b.getGraphics().drawImage(imagen, 0, 0, null);
+        ImageIO.write(b, "jpg", f);
+    
+    }
+    
+   
+    
 }

@@ -4,7 +4,7 @@
  */
 package gui;
 
-import core.producto;
+import core.Producto;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Robot;
@@ -27,8 +27,8 @@ import javax.swing.table.DefaultTableModel;
 public class PPal extends javax.swing.JFrame {
 
     
-    private ArrayList<producto> listaStock = new ArrayList<>();
-    private ArrayList<producto> listaVender = new ArrayList<>();
+    private ArrayList<Producto> listaStock = new ArrayList<>();
+    private ArrayList<Producto> listaVender = new ArrayList<>();
     Robot r;
     /**
      * Creates new form PPal
@@ -617,7 +617,7 @@ public class PPal extends javax.swing.JFrame {
         if (!txt_insertar.getText().equals("") || txt_insertar.getText().equals("Inserte Código de Barras")) {
             
             try {
-                producto p = new producto(Integer.parseInt(txt_insertar.getText()));
+                Producto p = new Producto(Integer.parseInt(txt_insertar.getText()));
                 insertarLineaVenta(p);
             } catch (SQLException ex) {
                 Logger.getLogger(PPal.class.getName()).log(Level.SEVERE, null, ex);
@@ -664,7 +664,7 @@ public class PPal extends javax.swing.JFrame {
         if (filas > 0) {
 
             ArrayList<Integer> mod = new ArrayList<>();
-            producto p, paux = new producto();
+            Producto p, paux = new Producto();
 
             for (int i = 0; i < filas; i++) {
                 paux.setCod_barras((int) Tabla_Stock.getValueAt(i, 0));
@@ -700,7 +700,7 @@ public class PPal extends javax.swing.JFrame {
             listaStock.clear();
 
             try {
-                listaStock = producto.busquedaStock(txt_Busqueda.getText());
+                listaStock = Producto.busquedaStock(txt_Busqueda.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -762,7 +762,7 @@ public class PPal extends javax.swing.JFrame {
         listaStock.clear();
 
         try {
-            listaStock = producto.consultarStock();
+            listaStock = Producto.consultarStock();
         } catch (SQLException ex) {
             Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -793,7 +793,7 @@ public class PPal extends javax.swing.JFrame {
         listaStock.clear();
 
         try {
-            listaStock = producto.consultarTodoStock();
+            listaStock = Producto.consultarTodoStock();
         } catch (SQLException ex) {
             Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -822,7 +822,7 @@ public class PPal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txt_insertarKeyPressed
 
-    private void insertarLineaVenta(producto p){
+    private void insertarLineaVenta(Producto p){
     
             DefaultTableModel temp = (DefaultTableModel) Tabla_Vender.getModel();
             Object[] fila = new Object[5];
