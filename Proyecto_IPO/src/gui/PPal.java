@@ -4,8 +4,11 @@
  */
 package gui;
 
+<<<<<<< HEAD
 import core.Producto;
 import core.Ticket_Producto;
+=======
+>>>>>>> origin/master
 import core.Producto;
 import java.awt.AWTException;
 import java.awt.Color;
@@ -29,11 +32,18 @@ import javax.swing.table.DefaultTableModel;
 public class PPal extends javax.swing.JFrame {
 
     
+<<<<<<< HEAD
     private ArrayList<Producto> listaStock = new ArrayList<>();
     private ArrayList<Ticket_Producto> listaVender = new ArrayList<>();
     
 
     Robot r;
+=======
+
+    private ArrayList<Producto> listaStock = new ArrayList<>();
+    private ArrayList<Producto> listaVender = new ArrayList<>();
+
+>>>>>>> origin/master
     /**
      * Creates new form PPal
      */
@@ -43,8 +53,12 @@ public class PPal extends javax.swing.JFrame {
         centrarVentana();
         
         initComponents();
+<<<<<<< HEAD
        // productos=new Vector();
         r = new Robot();
+=======
+
+>>>>>>> origin/master
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
     }
@@ -93,9 +107,15 @@ public class PPal extends javax.swing.JFrame {
         cmd_mas = new javax.swing.JButton();
         cmd_menos = new javax.swing.JButton();
         cmd_punto = new javax.swing.JButton();
+<<<<<<< HEAD
         jLabel1 = new javax.swing.JLabel();
         lb_total = new javax.swing.JLabel();
         cmd_CE = new javax.swing.JButton();
+=======
+        cmd_CE = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lb_total = new javax.swing.JLabel();
+>>>>>>> origin/master
         PanelStock = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla_Stock = new javax.swing.JTable();
@@ -106,6 +126,7 @@ public class PPal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         cmd_Aplicar = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
+        PanelArticulos = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -405,9 +426,13 @@ public class PPal extends javax.swing.JFrame {
                         .addComponent(cmd_buscar)
                         .addGap(23, 23, 23))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
+<<<<<<< HEAD
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
 
+=======
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
+>>>>>>> origin/master
                         .addGap(26, 26, 26)
                         .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(PanelVenderLayout.createSequentialGroup()
@@ -585,6 +610,22 @@ public class PPal extends javax.swing.JFrame {
         PanelStock.setBounds(0, 0, 770, 450);
         Panel_Capas.add(PanelStock, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        PanelArticulos.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout PanelArticulosLayout = new javax.swing.GroupLayout(PanelArticulos);
+        PanelArticulos.setLayout(PanelArticulosLayout);
+        PanelArticulosLayout.setHorizontalGroup(
+            PanelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 990, Short.MAX_VALUE)
+        );
+        PanelArticulosLayout.setVerticalGroup(
+            PanelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 630, Short.MAX_VALUE)
+        );
+
+        PanelArticulos.setBounds(0, 0, 990, 630);
+        Panel_Capas.add(PanelArticulos, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -644,8 +685,15 @@ public class PPal extends javax.swing.JFrame {
         if (!txt_insertar.getText().equals("") || txt_insertar.getText().equals("Inserte Código de Barras")) {
             
             try {
+<<<<<<< HEAD
                 Producto p = new Producto(Integer.parseInt(txt_insertar.getText()));
                 if (p.getCod_barras()>0){insertarLineaVenta(p);}
+=======
+
+                Producto p = new Producto(Integer.parseInt(txt_insertar.getText()));
+                insertarLineaVenta(p);
+                
+>>>>>>> origin/master
             } catch (SQLException ex) {
                 Logger.getLogger(PPal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -840,6 +888,10 @@ public class PPal extends javax.swing.JFrame {
         Tabla_Stock.editCellAt(-1, -1);
     }//GEN-LAST:event_Tabla_StockFocusLost
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     private void cmd_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_masActionPerformed
         
         //Se le asigna a Valor lo que hay en la celda seleccionada
@@ -859,7 +911,11 @@ public class PPal extends javax.swing.JFrame {
         calcularPrecio();
     }//GEN-LAST:event_cmd_masActionPerformed
 
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> origin/master
     private void txt_insertarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_insertarKeyPressed
         
         if(evt.getKeyCode()== evt.VK_ENTER){
@@ -870,7 +926,10 @@ public class PPal extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_insertarKeyPressed
 
     private void insertarLineaVenta(Producto p){
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     
             DefaultTableModel temp = (DefaultTableModel) Tabla_Vender.getModel();
             
@@ -913,7 +972,10 @@ public class PPal extends javax.swing.JFrame {
 
             calcularPrecio();
         
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     }
     
     
@@ -1004,6 +1066,7 @@ public class PPal extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar Bar_Herramientas;
+    private javax.swing.JPanel PanelArticulos;
     private javax.swing.JPanel PanelStock;
     private javax.swing.JPanel PanelVender;
     private javax.swing.JLayeredPane Panel_Capas;
