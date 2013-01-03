@@ -4,7 +4,7 @@
  */
 package gui;
 
-import core.producto;
+import core.Producto;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EstadoStock extends javax.swing.JFrame {
 
-    private ArrayList<producto> lista = new ArrayList<>();
+    private ArrayList<Producto> lista = new ArrayList<>();
      /*
      * Creates new form EstadoStock
      */
@@ -295,7 +295,7 @@ public class EstadoStock extends javax.swing.JFrame {
         lista.clear();
         
         try {
-            lista = producto.consultarStock();
+            lista = Producto.consultarStock();
         } catch (SQLException ex) {
             Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -328,7 +328,7 @@ Toolkit.getDefaultToolkit().beep();
         lista.clear();
               
         try {
-            lista = producto.consultarTodoStock();
+            lista = Producto.consultarTodoStock();
         } catch (SQLException ex) {
             Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -363,7 +363,7 @@ Toolkit.getDefaultToolkit().beep();
             lista.clear();
             
             try {
-                lista = producto.busquedaStock(TBusqueda.getText());
+                lista = Producto.busquedaStock(TBusqueda.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -408,7 +408,7 @@ Toolkit.getDefaultToolkit().beep();
         if (filas > 0) {
 
             ArrayList<Integer> mod = new ArrayList<>();
-            producto p, paux = new producto();
+            Producto p, paux = new Producto();
 
             for (int i = 0; i < filas; i++) {
                 paux.setCod_barras((int) Tabla.getValueAt(i, 0));

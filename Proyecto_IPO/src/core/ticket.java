@@ -21,7 +21,7 @@ import java.util.Collections;
  *
  * @author Adrian
  */
-public class ticket {
+public class Ticket {
     
     private static String CIF = "A12345678";
     private static String NombreCompañia="Alibel";
@@ -33,9 +33,9 @@ public class ticket {
     private String fecha, hora;
     float total,iva=21;
     
-    ArrayList<ticket_producto> lineasfactura;
+    ArrayList<Ticket_Producto> lineasfactura;
 
-    public ticket(int id) {
+    public Ticket(int id) {
         Calendar aux= Calendar.getInstance();
         this.id = id;
         lineasfactura=new ArrayList<>();
@@ -74,7 +74,7 @@ public class ticket {
         
         if(!encontrado){
         
-            lineasfactura.add(new ticket_producto(id, idProducto, cantidad, precio));
+            lineasfactura.add(new Ticket_Producto(id, idProducto, cantidad, precio));
 
             total+=precio*cantidad;
             

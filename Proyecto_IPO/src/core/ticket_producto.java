@@ -8,19 +8,19 @@ package core;
  *
  * @author Adrian
  */
-public class ticket_producto implements Comparable<ticket_producto> {
+public class Ticket_Producto implements Comparable<Ticket_Producto> {
     
     private int idticket,idproducto,cantidad;
     private float precio;
 
-    public ticket_producto(int idticket, int idproducto, int cantidad, float precio) {
+    public Ticket_Producto(int idticket, int idproducto, int cantidad, float precio) {
         this.idticket = idticket;
         this.idproducto = idproducto;
         this.cantidad = cantidad;
         this.precio = precio;
     }
 
-    public ticket_producto() {
+    public Ticket_Producto() {
     }
 
     public int getCantidad() {
@@ -56,7 +56,7 @@ public class ticket_producto implements Comparable<ticket_producto> {
     }
 
     @Override
-    public int compareTo(ticket_producto o) {
+    public int compareTo(Ticket_Producto o) {
         
         if(this.getIdproducto()<o.getIdproducto())
             return -1;
