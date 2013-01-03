@@ -366,6 +366,78 @@ public class Ticket {
             }
         }
     }
+        
+    public static ArrayList<Ticket> consultarTodo() throws SQLException{
+        
+        ArrayList<Ticket> lista=new ArrayList<>();
+        ArrayList<Integer> ids=new ArrayList<>();
+        
+        Operaciones db= new Operaciones("..\\Base de Datos\\TPV");
+        
+        ResultSet resultados;
+        
+        resultados=db.consultar("SELECT id FROM ticket");
+        
+        resultados.next();
+        
+        while(!resultados.isAfterLast()){
+            ids.add(resultados.getInt("id"));
+            resultados.next();
+        }
+        
+        for (int i = 0; i < ids.size(); i++) {
+            
+            lista.add(new Ticket(ids.get(i)));
+            
+        }
+        
+        return lista;
+    }    
     
+    public static ArrayList<Ticket> consultarPorFecha(String fecha1,String fecha2) throws SQLException{
+        
+        ArrayList<Ticket> lista=new ArrayList<>();
+        ArrayList<Integer> ids=new ArrayList<>();
+              
+        Operaciones db= new Operaciones("..\\Base de Datos\\TPV"); 
+        ResultSet resultados;
+        
+        String aux1="";
+        aux1+=fecha1.charAt(6);
+        aux1+=fecha1.charAt(7);
+        aux1+=fecha1.charAt(8);
+        aux1+=fecha1.charAt(9);
+        aux1+=fecha1.charAt(3);
+        aux1+=fecha1.charAt(4);
+        aux1+=fecha1.charAt(0);
+        aux1+=fecha1.charAt(1);
+        
+        String aux2="";
+        aux2+=fecha2.charAt(6);
+        aux2+=fecha2.charAt(7);
+        aux2+=fecha2.charAt(8);
+        aux2+=fecha2.charAt(9);
+        aux2+=fecha2.charAt(3);
+        aux2+=fecha2.charAt(4);
+        aux2+=fecha2.charAt(0);
+        aux2+=fecha2.charAt(1);
+        
+        resultados=db.consultar("SELECT id FROM ticket WHERE fecha>=" + fecha1 +" AND fecha<=" + fecha2);
+        
+        resultados.next();
+        
+        while(!resultados.isAfterLast()){
+            ids.add(resultados.getInt("id"));
+            resultados.next();
+        }
+        
+        for (int i = 0; i < ids.size(); i++) {
+            
+            lista.add(new Ticket(ids.get(i)));
+            
+        }
+        
+        return lista;
+    }        
     
 }
