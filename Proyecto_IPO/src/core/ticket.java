@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,7 +44,7 @@ public class Ticket {
         fecha = aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH)+1) + "/" + aux.get(Calendar.YEAR);
         hora = aux.get(Calendar.HOUR_OF_DAY) + ":" + aux.get(Calendar.MINUTE);
          
-           }
+    }
 
     
     private void calcularTotal(){
@@ -101,6 +103,96 @@ public class Ticket {
         
         return encontrado;
                 
+    } 
+    
+    @Override
+    public String toString(){
+        
+         if(lineasfactura.size()>0){
+            String nombre="";
+            String aux;
+
+            Collections.sort(lineasfactura);
+            
+            
+            Operaciones db= new Operaciones("..\\Base de Datos\\TPV");
+            String bw="";
+
+            bw.concat(NombreCompañia);
+            bw.concat("\n");
+            bw.concat(CIF);
+            bw.concat("\n");
+            bw.concat("\n");
+            bw.concat(Direccion);
+            bw.concat("\n");;
+            bw.concat(Ciudad);
+            bw.concat("\n");
+            bw.concat(Provincia);
+            bw.concat("\n");
+            bw.concat("\n");
+            bw.concat(fecha + "  " + hora);
+            bw.concat("\n");
+            bw.concat("\n");
+            bw.concat("=====================================");
+            bw.concat("\n");
+            bw.concat("Art  Cant  Producto          Precio");
+            bw.concat("\n");
+
+            aux = "SELECT nombre FROM productos WHERE cod_barras=" + lineasfactura.get(0).getIdproducto();
+            for (int i = 1; i < lineasfactura.size(); i++) {
+
+                aux += " OR cod_barras=" + lineasfactura.get(i).getIdproducto();
+
+
+            }
+            aux+=" ORDER BY cod_barras";
+            
+            ResultSet resultados = db.consultar(aux);
+            try {
+                resultados.next();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                    
+            for (int i = 0; i < lineasfactura.size(); i++) {
+                try {
+                    nombre = resultados.getString(1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    resultados.next();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                bw.concat("\n");
+                bw.concat(lineasfactura.get(i).getIdproducto() + "  "
+                        + lineasfactura.get(i).getCantidad() + "    "
+                        + nombre.substring(0, 15) + "   "
+                        + lineasfactura.get(i).getPrecio() + " €");
+                bw.concat("\n");
+
+            }
+
+            bw.concat("=====================================");
+            bw.concat("\n");
+            bw.concat("\n");
+            bw.concat("                     Total:  " + total + " €");
+            bw.concat("\n");
+            bw.concat("\n");
+            bw.concat("---------21% I.V.A. Incluido---------");
+
+
+            return bw; 
+            
+
+        } else {
+            Panel.error("ERROR", "Ticket Vacio.");
+        }
+        
+         return "";
+         
     } 
     
     public void imprimir_ticket() throws IOException, SQLException{

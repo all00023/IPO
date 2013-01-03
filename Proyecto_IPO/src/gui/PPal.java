@@ -89,9 +89,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_mas = new javax.swing.JButton();
         cmd_menos = new javax.swing.JButton();
         cmd_punto = new javax.swing.JButton();
+        cmd_CE = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lb_total = new javax.swing.JLabel();
-        cmd_CE = new javax.swing.JButton();
         PanelStock = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla_Stock = new javax.swing.JTable();
@@ -102,6 +102,7 @@ public class PPal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         cmd_Aplicar = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
+        PanelArticulos = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -386,7 +387,6 @@ public class PPal extends javax.swing.JFrame {
 
         lb_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-
         javax.swing.GroupLayout PanelVenderLayout = new javax.swing.GroupLayout(PanelVender);
         PanelVender.setLayout(PanelVenderLayout);
         PanelVenderLayout.setHorizontalGroup(
@@ -402,9 +402,7 @@ public class PPal extends javax.swing.JFrame {
                         .addComponent(cmd_buscar)
                         .addGap(23, 23, 23))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
-
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
-
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                         .addGap(26, 26, 26)
                         .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(PanelVenderLayout.createSequentialGroup()
@@ -581,6 +579,22 @@ public class PPal extends javax.swing.JFrame {
 
         PanelStock.setBounds(0, 0, 770, 450);
         Panel_Capas.add(PanelStock, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        PanelArticulos.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout PanelArticulosLayout = new javax.swing.GroupLayout(PanelArticulos);
+        PanelArticulos.setLayout(PanelArticulosLayout);
+        PanelArticulosLayout.setHorizontalGroup(
+            PanelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 990, Short.MAX_VALUE)
+        );
+        PanelArticulosLayout.setVerticalGroup(
+            PanelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 630, Short.MAX_VALUE)
+        );
+
+        PanelArticulos.setBounds(0, 0, 990, 630);
+        Panel_Capas.add(PanelArticulos, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1002,6 +1016,7 @@ public class PPal extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar Bar_Herramientas;
+    private javax.swing.JPanel PanelArticulos;
     private javax.swing.JPanel PanelStock;
     private javax.swing.JPanel PanelVender;
     private javax.swing.JLayeredPane Panel_Capas;
