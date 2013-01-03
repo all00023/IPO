@@ -71,32 +71,20 @@ public class Ticket {
             this.total=resultados.getFloat("total");
             this.iva=resultados.getFloat("iva");
             
+            lineasfactura=new ArrayList<>();
             
-            resultados = db.consultar("SELECT * FROM ticket_producto WHERE idticket=" + id);
-            
+            resultados = db.consultar("SELECT * FROM ticket_producto WHERE idticket=" + id);            
+            resultados.next();
+                
+            while(!resultados.isAfterLast()) {
+                    
+                lineasfactura.add(new Ticket_Producto(id, resultados.getInt("isproducto"), 
+                        resultados.getInt("cantidad"), resultados.getInt("precio")));
+                        
                 resultados.next();
 
-                
-//            for (int i = 0; i < lineasfactura.size(); i++) {
-//                try {
-//                    nombre = resultados.getString(1);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                try {
-//                    resultados.next();
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//
-//                bw.concat("\n");
-//                bw.concat(lineasfactura.get(i).getIdproducto() + "  "
-//                        + lineasfactura.get(i).getCantidad() + "    "
-//                        + nombre.substring(0, 15) + "   "
-//                        + lineasfactura.get(i).getPrecio() + " €");
-//                bw.concat("\n");
-//
-//            }
+
+            }
             
             
         }
@@ -345,5 +333,39 @@ public class Ticket {
         
         return aux + 1;
     }
+    
+        public void insertar() throws SQLException {
+
+        Operaciones db = new Operaciones("..\\Base de Datos\\TPV");
+
+        ResultSet resultados = db.consultar("SELECT id FROM productos WHERE id=" + id);
+
+        if (!resultados.isClosed()) {
+            Panel.error("ERROR", "El ticket ya existe en la Base de Datos.");
+        } else {
+            
+            String aux="";
+            aux+=fecha.charAt(6);
+            aux+=fecha.charAt(7);
+            aux+=fecha.charAt(8);
+            aux+=fecha.charAt(9);
+            aux+=fecha.charAt(3);
+            aux+=fecha.charAt(4);
+            aux+=fecha.charAt(0);
+            aux+=fecha.charAt(1);
+            
+            db.insertar("INSERT INTO ticket VALUES (" + id + ",'" + aux + "','"
+                    + hora + "'," + total + "," + iva + ")");
+            
+            for (int i = 0; i < lineasfactura.size(); i++) {
+                
+                db.insertar("INSERT INTO ticket_producto VALUES (" + lineasfactura.get(i).getIdproducto()+ 
+                        "," + lineasfactura.get(i).getIdticket() + "," + lineasfactura.get(i).getPrecio()+
+                        "," + lineasfactura.get(i).getCantidad() + ")");
+                
+            }
+        }
+    }
+    
     
 }
