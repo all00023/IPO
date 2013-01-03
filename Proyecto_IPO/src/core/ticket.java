@@ -7,6 +7,7 @@ package core;
 import Operaciones.Operaciones;
 import gui.Panel;
 import java.awt.Desktop;
+import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -33,19 +34,78 @@ public class Ticket {
     
     private int id;
     private String fecha, hora;
-    float total,iva=21;
+    private float total,iva=21;
     
     ArrayList<Ticket_Producto> lineasfactura;
 
-    public Ticket(int id) {
+    public Ticket() throws SQLException {
         Calendar aux= Calendar.getInstance();
-        this.id = id;
+        this.id = getNextId();
         lineasfactura=new ArrayList<>();
-        fecha = aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH)+1) + "/" + aux.get(Calendar.YEAR);
-        hora = aux.get(Calendar.HOUR_OF_DAY) + ":" + aux.get(Calendar.MINUTE);
+        String dia = String.valueOf(aux.get(Calendar.DAY_OF_MONTH)), 
+                mes=String.valueOf(aux.get(Calendar.MONTH)+1), año = String.valueOf(aux.get(Calendar.YEAR)),
+                minuto = String.valueOf(aux.get(Calendar.MINUTE)), _hora = String.valueOf(aux.get(Calendar.HOUR_OF_DAY));
+        
+        if(dia.length()<2) dia='0'+dia;
+        if(mes.length()<2) mes='0'+mes;
+        if(minuto.length()<2) minuto='0'+minuto;
+        if(_hora.length()<2) _hora='0'+_hora;
+        
+        fecha = dia + "/" + mes + "/" + año;
+        hora = _hora + ":" + minuto;
          
     }
+    
+    public Ticket(int id) throws SQLException{
+        
+        Operaciones db= new Operaciones("..\\Base de Datos\\TPV");
+        
+        ResultSet resultados=db.consultar("SELECT * FROM ticket WHERE id="+id);
+        
+        if(!resultados.isClosed()){
+            
+            this.id=resultados.getInt("id");
+            String aux=resultados.getString("fecha");
+            this.fecha = aux.charAt(6)+aux.charAt(7)+"/"+aux.charAt(4)+aux.charAt(5)+"/"+aux.charAt(0)+aux.charAt(1)+aux.charAt(2)+aux.charAt(3);
+            this.hora=resultados.getString("hora");
+            this.total=resultados.getFloat("total");
+            this.iva=resultados.getFloat("iva");
+            
+            
+            resultados = db.consultar("SELECT * FROM ticket_producto WHERE idticket=" + id);
+            
+                resultados.next();
 
+                
+//            for (int i = 0; i < lineasfactura.size(); i++) {
+//                try {
+//                    nombre = resultados.getString(1);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                try {
+//                    resultados.next();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//
+//                bw.concat("\n");
+//                bw.concat(lineasfactura.get(i).getIdproducto() + "  "
+//                        + lineasfactura.get(i).getCantidad() + "    "
+//                        + nombre.substring(0, 15) + "   "
+//                        + lineasfactura.get(i).getPrecio() + " €");
+//                bw.concat("\n");
+//
+//            }
+            
+            
+        }
+        else{
+            Panel.error("ERROR", "No existe el producto.");
+            this.id = -1;
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }
     
     private void calcularTotal(){
         
@@ -272,4 +332,18 @@ public class Ticket {
             Panel.error("ERROR", "Ticket Vacio.");
         }
     }
+    
+    public static int getNextId() throws SQLException{
+        
+        Operaciones db= new Operaciones("..\\Base de Datos\\TPV");
+        
+        ResultSet resultados;
+        
+        resultados=db.consultar("SELECT id FROM ticket WHERE id=(SELECT MAX(id) FROM ticket)");
+        
+        int aux=resultados.getInt("id");
+        
+        return aux + 1;
+    }
+    
 }
