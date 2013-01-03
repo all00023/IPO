@@ -24,7 +24,12 @@ public class Panel {
     }
     
     public static void error (String titulo, String mensaje){
-        javax.swing.JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.ERROR);
+        try {
+            javax.swing.JOptionPane.showMessageDialog(null, mensaje, titulo, JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        
         
     }
 }

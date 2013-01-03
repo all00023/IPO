@@ -5,6 +5,7 @@
 package gui;
 
 import core.producto;
+import core.ticket_producto;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.sql.SQLException;
@@ -24,7 +25,7 @@ public class PPal extends javax.swing.JFrame {
 
     
     private ArrayList<producto> listaStock = new ArrayList<>();
-    private ArrayList<producto> listaVender = new ArrayList<>();
+    private ArrayList<ticket_producto> listaVender = new ArrayList<>();
     
     /**
      * Creates new form PPal
@@ -220,7 +221,7 @@ public class PPal extends javax.swing.JFrame {
                 java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -280,6 +281,11 @@ public class PPal extends javax.swing.JFrame {
         });
 
         cmd_mas.setText("+");
+        cmd_mas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_masActionPerformed(evt);
+            }
+        });
 
         cmd_menos.setText("-");
         cmd_menos.addActionListener(new java.awt.event.ActionListener() {
@@ -620,7 +626,7 @@ public class PPal extends javax.swing.JFrame {
             
             try {
                 producto p = new producto(Integer.parseInt(txt_insertar.getText()));
-                insertarLineaVenta(p);
+                if (p.getCod_barras()>0){insertarLineaVenta(p);}
             } catch (SQLException ex) {
                 Logger.getLogger(PPal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -817,10 +823,30 @@ public class PPal extends javax.swing.JFrame {
         Tabla_Stock.editCellAt(-1, -1);
     }//GEN-LAST:event_Tabla_StockFocusLost
 
+    private void cmd_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_masActionPerformed
+        
+        //Se le asigna a Valor lo que hay en la celda seleccionada
+        String valor = String.valueOf(Tabla_Vender.getValueAt(Tabla_Vender.getSelectedRow(), 2));
+        //Se le asinga a precio el precio por unidad que hay en la fila seleccionada
+        String precio =String.valueOf(Tabla_Vender.getValueAt(Tabla_Vender.getSelectedRow(), 3));
+        //Se guarda en Nvalor el int que hay en Valor más 1
+        int nValor = Integer.parseInt(valor) + 1;
+        //Se guarda en nPrecio el float que hay en precio por unidad
+        float nPrecio= Float.parseFloat(precio);
+        nPrecio=nPrecio*nValor;
+        
+        //Se imprime en en la celda seleccionada el int más 1, es decir el Nvalor
+        Tabla_Vender.setValueAt(nValor, Tabla_Vender.getSelectedRow(), 2);     
+        //Se imprime en la celda del precio final el precio por unidad por las unidades
+        Tabla_Vender.setValueAt(nPrecio, Tabla_Vender.getSelectedRow(), 4); 
+        calcularPrecio();
+    }//GEN-LAST:event_cmd_masActionPerformed
+
     private void insertarLineaVenta(producto p){
     
             DefaultTableModel temp = (DefaultTableModel) Tabla_Vender.getModel();
-            listaVender.add(p);
+            
+            
             
             Object[] fila = new Object[5];
             boolean existe=false;
@@ -908,13 +934,12 @@ public class PPal extends javax.swing.JFrame {
     private void calcularPrecio(){
         float precio=0;
         for (int i=0; i<listaVender.size(); i++){
-            producto p=(producto)listaVender.get(i);
-            precio+=p.getPrecio();
+            //producto p=(producto)listaVender.get(i);
+            //precio+=(p.getPrecio()*p.;
         }
         lb_total.setText(""+precio+" €");
     }
     
-    private Vector productos;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar Bar_Herramientas;
     private javax.swing.JPanel PanelStock;

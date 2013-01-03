@@ -293,8 +293,8 @@
                       <Table columnCount="5" rowCount="0">
                         <Column editable="false" title="Cod_Barras" type="java.lang.Integer"/>
                         <Column editable="false" title="Articulo" type="java.lang.String"/>
-                        <Column editable="true" title="unidades" type="java.lang.Integer"/>
-                        <Column editable="true" title="precio x1" type="java.lang.Float"/>
+                        <Column editable="false" title="unidades" type="java.lang.Integer"/>
+                        <Column editable="false" title="precio x1" type="java.lang.Float"/>
                         <Column editable="false" title="Precio" type="java.lang.Float"/>
                       </Table>
                     </Property>
@@ -508,6 +508,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="+"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmd_masActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="cmd_menos">
                   <Properties>

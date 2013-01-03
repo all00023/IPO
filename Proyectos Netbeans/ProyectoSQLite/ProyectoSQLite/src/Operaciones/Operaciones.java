@@ -26,6 +26,8 @@ public class Operaciones extends Conexion {
         conectar();
         try {
             consulta.executeUpdate(sql);
+//            consulta.close();
+//            conexion.close();
         } catch (SQLException e) {
             valor = false;
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -45,6 +47,8 @@ public class Operaciones extends Conexion {
         ResultSet resultado = null;
         try {
             resultado = consulta.executeQuery(sql);
+//            consulta.close();
+//            conexion.close();
 
         } catch (SQLException e) {
             System.out.println("Mensaje:" + e.getMessage());

@@ -42,7 +42,7 @@ public class producto {
         Operaciones db = new Operaciones("..\\Base de Datos\\TPV");
 
         ResultSet resultados = db.consultar("SELECT * FROM productos WHERE cod_barras=" + cod_barras);
-
+        
 
         if (!resultados.isClosed()) {
             this.cod_barras = resultados.getInt("cod_barras");
