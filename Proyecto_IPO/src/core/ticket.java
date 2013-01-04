@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,6 +94,16 @@ public class Ticket {
             this.id = -1;
             Toolkit.getDefaultToolkit().beep();
         }
+    }
+    
+    public Ticket(List<Ticket_Producto> list){
+        
+        for(int i = 0 ; i < list.size() ; i++){
+            list.get(i).setIdticket(id);
+        }
+        
+        lineasfactura=new ArrayList<>(list);
+        
     }
     
     private void calcularTotal(){
@@ -439,5 +450,9 @@ public class Ticket {
         
         return lista;
     }        
+    
+    public Ticket_Producto getLineaFactura(int i){
+        return lineasfactura.get(i);
+    }
     
 }

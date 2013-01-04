@@ -4,21 +4,15 @@
  */
 package gui;
 
-<<<<<<< HEAD
+
 import core.Producto;
 import core.Ticket_Producto;
-=======
->>>>>>> origin/master
-import core.Producto;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -32,18 +26,10 @@ import javax.swing.table.DefaultTableModel;
 public class PPal extends javax.swing.JFrame {
 
     
-<<<<<<< HEAD
+
     private ArrayList<Producto> listaStock = new ArrayList<>();
     private ArrayList<Ticket_Producto> listaVender = new ArrayList<>();
     
-
-    Robot r;
-=======
-
-    private ArrayList<Producto> listaStock = new ArrayList<>();
-    private ArrayList<Producto> listaVender = new ArrayList<>();
-
->>>>>>> origin/master
     /**
      * Creates new form PPal
      */
@@ -53,12 +39,7 @@ public class PPal extends javax.swing.JFrame {
         centrarVentana();
         
         initComponents();
-<<<<<<< HEAD
-       // productos=new Vector();
-        r = new Robot();
-=======
 
->>>>>>> origin/master
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
     }
@@ -107,15 +88,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_mas = new javax.swing.JButton();
         cmd_menos = new javax.swing.JButton();
         cmd_punto = new javax.swing.JButton();
-<<<<<<< HEAD
         jLabel1 = new javax.swing.JLabel();
         lb_total = new javax.swing.JLabel();
         cmd_CE = new javax.swing.JButton();
-=======
-        cmd_CE = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        lb_total = new javax.swing.JLabel();
->>>>>>> origin/master
         PanelStock = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla_Stock = new javax.swing.JTable();
@@ -426,13 +401,11 @@ public class PPal extends javax.swing.JFrame {
                         .addComponent(cmd_buscar)
                         .addGap(23, 23, 23))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
-<<<<<<< HEAD
+
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
 
-=======
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
->>>>>>> origin/master
+
                         .addGap(26, 26, 26)
                         .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(PanelVenderLayout.createSequentialGroup()
@@ -685,15 +658,10 @@ public class PPal extends javax.swing.JFrame {
         if (!txt_insertar.getText().equals("") || txt_insertar.getText().equals("Inserte Código de Barras")) {
             
             try {
-<<<<<<< HEAD
-                Producto p = new Producto(Integer.parseInt(txt_insertar.getText()));
-                if (p.getCod_barras()>0){insertarLineaVenta(p);}
-=======
 
                 Producto p = new Producto(Integer.parseInt(txt_insertar.getText()));
-                insertarLineaVenta(p);
-                
->>>>>>> origin/master
+                if (p.getCod_barras()>0){insertarLineaVenta(p);}
+
             } catch (SQLException ex) {
                 Logger.getLogger(PPal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -888,10 +856,7 @@ public class PPal extends javax.swing.JFrame {
         Tabla_Stock.editCellAt(-1, -1);
     }//GEN-LAST:event_Tabla_StockFocusLost
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
     private void cmd_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_masActionPerformed
         
         //Se le asigna a Valor lo que hay en la celda seleccionada
@@ -911,11 +876,7 @@ public class PPal extends javax.swing.JFrame {
         calcularPrecio();
     }//GEN-LAST:event_cmd_masActionPerformed
 
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> origin/master
     private void txt_insertarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_insertarKeyPressed
         
         if(evt.getKeyCode()== evt.VK_ENTER){
@@ -926,10 +887,6 @@ public class PPal extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_insertarKeyPressed
 
     private void insertarLineaVenta(Producto p){
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
     
             DefaultTableModel temp = (DefaultTableModel) Tabla_Vender.getModel();
             
@@ -972,10 +929,6 @@ public class PPal extends javax.swing.JFrame {
 
             calcularPrecio();
         
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
     }
     
     
