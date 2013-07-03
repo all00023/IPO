@@ -1,0 +1,22 @@
+Alibel
+A12345678
+
+C\ Falsa 123
+Huelva 21001 
+Huelva
+
+6/12/2012  16:32
+
+=====================================
+Art  Cant  Producto          Precio
+
+1001  4    FORTUNA ROJO BL   2.0 €
+
+1004  7    CHESTERFIELD CL   4.0 €
+
+1005  1    FARIAS SUPERIOR   1.0 €
+=====================================
+
+                     Total:  37.0 €
+
+---------21% I.V.A. Incluido---------
