@@ -61,7 +61,7 @@ public class Ticket {
 
         fecha = dia + "/" + mes + "/" + año;
         hora = _hora + ":" + minuto;
-        
+
         calcularTotal();
 
     }
@@ -109,7 +109,7 @@ public class Ticket {
 
         Calendar aux = Calendar.getInstance();
         this.id = getNextId();
-        
+
         String dia = String.valueOf(aux.get(Calendar.DAY_OF_MONTH)),
                 mes = String.valueOf(aux.get(Calendar.MONTH) + 1), año = String.valueOf(aux.get(Calendar.YEAR)),
                 minuto = String.valueOf(aux.get(Calendar.MINUTE)), _hora = String.valueOf(aux.get(Calendar.HOUR_OF_DAY));
@@ -135,7 +135,7 @@ public class Ticket {
         }
 
         lineasfactura = new ArrayList<>(list);
-        
+
         calcularTotal();
 
     }
@@ -146,7 +146,7 @@ public class Ticket {
 
         for (int i = 0; i < lineasfactura.size(); i++) {
 
-            total += lineasfactura.get(i).getPrecio()*lineasfactura.get(i).getCantidad();
+            total += lineasfactura.get(i).getPrecio() * lineasfactura.get(i).getCantidad();
 
         }
 
@@ -173,7 +173,7 @@ public class Ticket {
             total += precio * cantidad;
 
         }
-        
+
         calcularTotal();
 
         return !encontrado;
@@ -194,7 +194,7 @@ public class Ticket {
             }
 
         }
-        
+
         calcularTotal();
 
         return encontrado;
@@ -214,25 +214,25 @@ public class Ticket {
             Operaciones db = new Operaciones("BBDD\\TPV");
             String bw = "";
 
-            bw+=NombreCompañia;
-            bw+="\n";
-            bw+=CIF;
-            bw+="\n";
-            bw+="\n";
-            bw+=Direccion;
-            bw+="\n";
-            bw+=Ciudad;
-            bw+="\n";
-            bw+=Provincia;
-            bw+="\n";
-            bw+="\n";
-            bw+=fecha + "  " + hora;
-            bw+="\n";
-            bw+="\n";
-            bw+="=====================================";
-            bw+="\n";
-            bw+="Art  Cant  Producto          Precio";
-            bw+="\n";
+            bw += NombreCompañia;
+            bw += "\n";
+            bw += CIF;
+            bw += "\n";
+            bw += "\n";
+            bw += Direccion;
+            bw += "\n";
+            bw += Ciudad;
+            bw += "\n";
+            bw += Provincia;
+            bw += "\n";
+            bw += "\n";
+            bw += fecha + "  " + hora;
+            bw += "\n";
+            bw += "\n";
+            bw += "=====================================";
+            bw += "\n";
+            bw += "Art  Cant  Producto          Precio";
+            bw += "\n";
 
             aux = "SELECT nombre FROM productos WHERE cod_barras=" + lineasfactura.get(0).getIdproducto();
             for (int i = 1; i < lineasfactura.size(); i++) {
@@ -249,7 +249,7 @@ public class Ticket {
             } catch (SQLException ex) {
                 Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             for (int i = 0; i < lineasfactura.size(); i++) {
                 try {
                     nombre = resultados.getString(1);
@@ -261,20 +261,28 @@ public class Ticket {
                 } catch (SQLException ex) {
                     Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 //rellenamos con espacios si no llegamos a los 15 caracteres
                 for (int j = nombre.length(); j <= 15; j++) {
-                    
-                    nombre+=" ";
-                    
+
+                    nombre += " ";
+
                 }
 
-                bw+="\n";
-                bw+=lineasfactura.get(i).getIdproducto() + "  "
+                String auxString = String.valueOf(lineasfactura.get(i).getPrecio());
+
+                int indice = auxString.indexOf(".");
+
+                if (indice > 0 && indice < auxString.length() - 3) {
+                    auxString = auxString.substring(0, indice + 3);
+                }
+
+                bw += "\n";
+                bw += lineasfactura.get(i).getIdproducto() + "  "
                         + lineasfactura.get(i).getCantidad() + "    "
                         + nombre.substring(0, 15) + "   "
-                        + lineasfactura.get(i).getPrecio() + " €";
-                bw+="\n";
+                        + auxString + " €";
+                bw += "\n";
 
             }
             try {
@@ -282,13 +290,22 @@ public class Ticket {
             } catch (SQLException ex) {
                 Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
             }
-            bw+="=====================================";
-            bw+="\n";
-            bw+="\n";
-            bw+="                     Total:  " + total + " €";
-            bw+="\n";
-            bw+="\n";
-            bw+="---------21% I.V.A. Incluido---------";
+
+            String auxString = String.valueOf(total);
+
+            int indice = auxString.indexOf(".");
+
+            if (indice > 0 && indice < auxString.length() - 3) {
+                auxString = auxString.substring(0, indice + 3);
+            }
+
+            bw += "=====================================";
+            bw += "\n";
+            bw += "\n";
+            bw += "                     Total:  " + auxString + " €";
+            bw += "\n";
+            bw += "\n";
+            bw += "---------21% I.V.A. Incluido---------";
 
 
             return bw;
@@ -347,32 +364,50 @@ public class Ticket {
             ResultSet resultados = db.consultar(aux);
 
             resultados.next();
-            
+
             for (int i = 0; i < lineasfactura.size(); i++) {
 
                 nombre = resultados.getString(1);
                 resultados.next();
-                
+
                 //rellenamos con espacios si no llegamos a los 15 caracteres
                 for (int j = nombre.length(); j <= 15; j++) {
-                    
-                    nombre+=" ";
-                    
+
+                    nombre += " ";
+
+                }
+
+                String auxString = String.valueOf(lineasfactura.get(i).getPrecio());
+
+                int indice = auxString.indexOf(".");
+
+                if (indice > 0 && indice < auxString.length() - 3) {
+                    auxString = auxString.substring(0, indice + 3);
                 }
 
                 bw.newLine();
                 bw.write(lineasfactura.get(i).getIdproducto() + "  "
                         + lineasfactura.get(i).getCantidad() + "    "
                         + nombre.substring(0, 15) + "   "
-                        + lineasfactura.get(i).getPrecio() + " €");
+                        + auxString + " €");
                 bw.newLine();
 
             }
+
             resultados.close();
+
+            String auxString = String.valueOf(total);
+
+            int indice = auxString.indexOf(".");
+
+            if (indice > 0 && indice < auxString.length() - 3) {
+                auxString = auxString.substring(0, indice + 3);
+            }
+
             bw.write("=====================================");
             bw.newLine();
             bw.newLine();
-            bw.write("                     Total:  " + total + " €");
+            bw.write("                     Total:  " + auxString + " €");
             bw.newLine();
             bw.newLine();
             bw.write("---------21% I.V.A. Incluido---------");
@@ -386,15 +421,14 @@ public class Ticket {
             Panel.error("ERROR", "Ticket Vacio.");
         }
     }
-    
-    public void abrirTicket(){
+
+    public void abrirTicket() {
         try {
             Desktop.getDesktop().open(new File("tickets" + File.separatorChar + "ticket" + id + ".txt"));
         } catch (IOException ex) {
             Panel.error("No se encuentra el ticket", "El fichero no se encuentra en la carpeta ticket o esta siendo usado por otra aplicación");
         }
     }
-    
 
     public static int getNextId() throws SQLException {
 

@@ -710,7 +710,7 @@
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="cmd_Buscar" min="-2" pref="49" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane2" alignment="1" pref="691" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -727,7 +727,7 @@
                           <Component id="txt_Busqueda" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" pref="282" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="279" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace type="separate" max="-2" attributes="0"/>

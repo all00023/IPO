@@ -1634,6 +1634,8 @@ public class PPal extends javax.swing.JFrame {
                 modelo.removeRow(0);
 
             }
+            
+            preciosUnitarios= new ArrayList<>();
 
             actualizarPrecios();
 
@@ -1664,7 +1666,9 @@ public class PPal extends javax.swing.JFrame {
                     modelo.removeRow(0);
 
                 }
-
+                
+                preciosUnitarios= new ArrayList<>();
+                
                 actualizarPrecios();
             }
         }
