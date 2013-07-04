@@ -34,6 +34,7 @@ public class Producto {
     private int cod_barras, stock, stock_minimo, nVentas;
     private String nombre, formato;
     private float precio;
+    private static String RUTA_BBDD="BBDD\\TPV";
 
     public Producto(int cod_barras, String nombre, float precio, int stock,
             int stock_minimo, String formato, int nVentas) {
@@ -49,7 +50,7 @@ public class Producto {
 
     public Producto(int cod_barras) throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados = db.consultar("SELECT * FROM productos WHERE cod_barras=" + cod_barras);
 
@@ -62,6 +63,7 @@ public class Producto {
             stock_minimo = resultados.getInt("stock_minimo");
             formato = resultados.getString("formato");
             nVentas = resultados.getInt("nVentas");
+            resultados.close();
         } else {
 
             Panel.error("ERROR", "No existe el producto.");
@@ -149,7 +151,7 @@ public class Producto {
 
     public void insertar() throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados = db.consultar("SELECT cod_barras FROM productos WHERE cod_barras=" + cod_barras);
 
@@ -159,15 +161,16 @@ public class Producto {
             db.insertar("INSERT INTO productos VALUES (" + cod_barras + ",'" + nombre + "',"
                     + precio + "," + stock + "," + stock_minimo + ",'" + formato + "'," + nVentas + ")");
         }
+        resultados.close();
     }
 
     public void modificar_cambios() {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         String aux = "UPDATE productos SET nombre='" + nombre + "',precio=" + precio
                 + ",stock=" + stock + ",stock_minimo=" + stock_minimo + ",formato='" + formato
-                + "',nventas="+ nVentas +" WHERE cod_barras=" + cod_barras ;
+                + "',nventas=" + nVentas + " WHERE cod_barras=" + cod_barras;
 
         db.insertar(aux);
 
@@ -231,7 +234,7 @@ public class Producto {
 
     public static void borrarDB(int codibarra) {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         db.insertar("DELETE FROM productos WHERE cod_barras=" + codibarra);
 
@@ -240,7 +243,7 @@ public class Producto {
 
     public static ArrayList<Producto> consultarStock() throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados = db.consultar("SELECT * "
                 + "FROM productos WHERE stock<=stock_minimo");
@@ -257,6 +260,7 @@ public class Producto {
                         resultados.getString("formato"), resultados.getInt("nVentas")));
                 resultados.next();
             }
+            resultados.close();
         }
 
         return lista;
@@ -265,7 +269,7 @@ public class Producto {
 
     public static ArrayList<Producto> consultarTodoStock() throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados = db.consultar("SELECT * FROM productos");
 
@@ -281,6 +285,7 @@ public class Producto {
                         resultados.getString("formato"), resultados.getInt("nVentas")));
                 resultados.next();
             }
+            resultados.close();
         }
 
         return lista;
@@ -289,7 +294,7 @@ public class Producto {
 
     public static ArrayList<Producto> busquedaStock(String codigo) throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
         ResultSet resultados = db.consultar("SELECT * FROM productos WHERE cod_barras LIKE '%" + codigo + "%'");
 
         ArrayList<Producto> lista = new ArrayList<>();
@@ -304,6 +309,7 @@ public class Producto {
                         resultados.getString("formato"), resultados.getInt("nVentas")));
                 resultados.next();
             }
+            resultados.close();
         }
 
         return lista;

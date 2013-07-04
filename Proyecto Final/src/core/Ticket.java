@@ -99,6 +99,7 @@ public class Ticket {
             this.id = -1;
             Toolkit.getDefaultToolkit().beep();
         }
+        resultados.close();
     }
 
     public Ticket(List<Ticket_Producto> list) {
@@ -237,7 +238,11 @@ public class Ticket {
                 bw.concat("\n");
 
             }
-
+            try {
+                resultados.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+            }
             bw.concat("=====================================");
             bw.concat("\n");
             bw.concat("\n");
@@ -245,7 +250,7 @@ public class Ticket {
             bw.concat("\n");
             bw.concat("\n");
             bw.concat("---------21% I.V.A. Incluido---------");
-
+            
 
             return bw;
 
@@ -253,7 +258,7 @@ public class Ticket {
         } else {
             Panel.error("ERROR", "Ticket Vacio.");
         }
-
+        
         return "";
 
     }
@@ -317,7 +322,7 @@ public class Ticket {
                 bw.newLine();
 
             }
-
+            resultados.close();
             bw.write("=====================================");
             bw.newLine();
             bw.newLine();
@@ -343,9 +348,9 @@ public class Ticket {
         ResultSet resultados;
 
         resultados = db.consultar("SELECT id FROM ticket WHERE id=(SELECT MAX(id) FROM ticket)");
-
+        
         int aux = resultados.getInt("id");
-
+        resultados.close();
         return aux + 1;
     }
 
@@ -380,6 +385,7 @@ public class Ticket {
 
             }
         }
+        resultados.close();
     }
 
     public static ArrayList<Ticket> consultarTodo() throws SQLException {
@@ -405,7 +411,7 @@ public class Ticket {
             lista.add(new Ticket(ids.get(i)));
 
         }
-
+        resultados.close();
         return lista;
     }
 
@@ -451,7 +457,7 @@ public class Ticket {
             lista.add(new Ticket(ids.get(i)));
 
         }
-
+        resultados.close();
         return lista;
     }
 
