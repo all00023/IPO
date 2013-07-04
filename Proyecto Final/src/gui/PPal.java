@@ -469,11 +469,11 @@ public class PPal extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                         .addGap(26, 26, 26)
-                        .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(PanelVenderLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(lb_total, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lb_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31))))
         );
@@ -813,6 +813,9 @@ public class PPal extends javax.swing.JFrame {
                 if (p.getCod_barras() > 0) {
                     insertarLineaVenta(p);
                 }
+                
+                cmd_insertar.requestFocusInWindow();
+                txt_insertar.requestFocusInWindow();
 
             } catch (SQLException ex) {
                 Logger.getLogger(PPal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1566,7 +1569,7 @@ public class PPal extends javax.swing.JFrame {
         int i = 0;
         while (!existe && i < n) {
 
-            if (temp.getValueAt(i, 0) == p.getCod_barras()) {
+            if ((Integer)temp.getValueAt(i, 0) == p.getCod_barras()) {
                 existe = true;
             } else {
                 i++;
@@ -1590,8 +1593,8 @@ public class PPal extends javax.swing.JFrame {
         } else {
 
             int aux;
-            aux = (int) temp.getValueAt(i, 2);
-            temp.setValueAt(aux, i, 2);
+            aux = (Integer) temp.getValueAt(i, 2);
+            temp.setValueAt(aux+1, i, 2);
 
         }
 
@@ -1721,7 +1724,15 @@ public class PPal extends javax.swing.JFrame {
 
         }
         
-        lb_total.setText("" + total + " €");
+        String aux = String.valueOf(total);
+        
+        int indice=aux.indexOf(".");
+        
+        if(indice>0 && indice<aux.length()-3){
+            aux=aux.substring(0, indice+3);
+        }
+        
+        lb_total.setText("" + aux + " €");
         
         return total;
     }
