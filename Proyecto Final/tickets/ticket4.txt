@@ -1,0 +1,22 @@
+Alibel
+A12345678
+
+C\ Falsa 123
+Huelva 21001 
+Huelva
+
+04/07/2013  21:25
+
+=====================================
+Art  Cant  Producto          Precio
+
+1001  1    FORTUNA ROJO BL   4.1 €
+
+1009  3    CAMEL FILTERS B   45.0 €
+
+1011  2    NOBEL DURO        4.1 €
+=====================================
+
+                     Total:  0.0 €
+
+---------21% I.V.A. Incluido---------

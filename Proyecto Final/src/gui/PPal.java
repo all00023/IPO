@@ -5,12 +5,14 @@
 package gui;
 
 import core.Producto;
+import core.Ticket;
 import core.Ticket_Producto;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Robot;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -20,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  * @author JOSE
@@ -40,12 +41,12 @@ public class PPal extends javax.swing.JFrame {
         centrarVentana();
 
         initComponents();
-        
+
 //        setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Iconos.100px/vender002.png")));
 
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
-        
+
     }
 
     private void centrarVentana() {
@@ -76,7 +77,7 @@ public class PPal extends javax.swing.JFrame {
         cmd_insertar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla_Vender = new javax.swing.JTable();
-        cmd_buscar = new javax.swing.JButton();
+        cmd_eliminar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         cmd_7 = new javax.swing.JButton();
         cmd_8 = new javax.swing.JButton();
@@ -94,6 +95,8 @@ public class PPal extends javax.swing.JFrame {
         cmd_CE = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lb_total = new javax.swing.JLabel();
+        cmd_finalizar = new javax.swing.JButton();
+        cmd_eliminarTodo = new javax.swing.JButton();
         PanelStock = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla_Stock = new javax.swing.JTable();
@@ -197,6 +200,7 @@ public class PPal extends javax.swing.JFrame {
 
         PanelVender.setBackground(new java.awt.Color(204, 204, 204));
 
+        txt_insertar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txt_insertar.setForeground(new java.awt.Color(102, 102, 102));
         txt_insertar.setText("Inserte codigo de Barras");
         txt_insertar.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -205,15 +209,16 @@ public class PPal extends javax.swing.JFrame {
             }
         });
         txt_insertar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_insertarKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_insertarKeyTyped(evt);
             }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_insertarKeyPressed(evt);
+            }
         });
 
-        cmd_insertar.setText("Inserta");
+        cmd_insertar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_insertar.setText("Inserta Artículo");
         cmd_insertar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_insertarActionPerformed(evt);
@@ -255,16 +260,18 @@ public class PPal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Tabla_Vender);
 
-        cmd_buscar.setText("Buscar");
-        cmd_buscar.addActionListener(new java.awt.event.ActionListener() {
+        cmd_eliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_eliminar.setText("Eliminar Artículo");
+        cmd_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmd_buscarActionPerformed(evt);
+                cmd_eliminarActionPerformed(evt);
             }
         });
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        cmd_7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_7.setText("7");
         cmd_7.setFocusable(false);
         cmd_7.addActionListener(new java.awt.event.ActionListener() {
@@ -273,6 +280,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_8.setText("8");
         cmd_8.setFocusable(false);
         cmd_8.addActionListener(new java.awt.event.ActionListener() {
@@ -281,6 +289,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_4.setText("4");
         cmd_4.setFocusable(false);
         cmd_4.addActionListener(new java.awt.event.ActionListener() {
@@ -289,6 +298,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_6.setText("6");
         cmd_6.setFocusable(false);
         cmd_6.addActionListener(new java.awt.event.ActionListener() {
@@ -297,6 +307,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_9.setText("9");
         cmd_9.setFocusable(false);
         cmd_9.addActionListener(new java.awt.event.ActionListener() {
@@ -305,6 +316,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_1.setText("1");
         cmd_1.setFocusable(false);
         cmd_1.addActionListener(new java.awt.event.ActionListener() {
@@ -313,6 +325,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_5.setText("5");
         cmd_5.setFocusable(false);
         cmd_5.addActionListener(new java.awt.event.ActionListener() {
@@ -321,6 +334,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_2.setText("2");
         cmd_2.setFocusable(false);
         cmd_2.addActionListener(new java.awt.event.ActionListener() {
@@ -329,6 +343,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_3.setText("3");
         cmd_3.setFocusable(false);
         cmd_3.addActionListener(new java.awt.event.ActionListener() {
@@ -337,6 +352,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_0.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_0.setText("0");
         cmd_0.setFocusable(false);
         cmd_0.addActionListener(new java.awt.event.ActionListener() {
@@ -345,6 +361,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_mas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_mas.setText("+");
         cmd_mas.setFocusable(false);
         cmd_mas.addActionListener(new java.awt.event.ActionListener() {
@@ -353,6 +370,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_menos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_menos.setText("-");
         cmd_menos.setFocusable(false);
         cmd_menos.addActionListener(new java.awt.event.ActionListener() {
@@ -361,6 +379,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_punto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_punto.setText(".");
         cmd_punto.setFocusable(false);
         cmd_punto.addActionListener(new java.awt.event.ActionListener() {
@@ -369,6 +388,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_CE.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_CE.setText("CE");
         cmd_CE.setFocusable(false);
         cmd_CE.addActionListener(new java.awt.event.ActionListener() {
@@ -452,11 +472,27 @@ public class PPal extends javax.swing.JFrame {
 
         lb_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        cmd_finalizar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        cmd_finalizar.setText("Finalizar Compra");
+        cmd_finalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_finalizarActionPerformed(evt);
+            }
+        });
+
+        cmd_eliminarTodo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_eliminarTodo.setText("Borrar Compra");
+        cmd_eliminarTodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_eliminarTodoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelVenderLayout = new javax.swing.GroupLayout(PanelVender);
         PanelVender.setLayout(PanelVenderLayout);
         PanelVenderLayout.setHorizontalGroup(
             PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelVenderLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelVenderLayout.createSequentialGroup()
@@ -464,28 +500,29 @@ public class PPal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmd_insertar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmd_buscar)
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
-                        .addGap(26, 26, 26)
-                        .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(PanelVenderLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(lb_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31))))
+                        .addComponent(cmd_eliminar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cmd_finalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(PanelVenderLayout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(18, 18, 18)
+                            .addComponent(lb_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmd_eliminarTodo))
+                .addGap(31, 31, 31))
         );
         PanelVenderLayout.setVerticalGroup(
             PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelVenderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_insertar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmd_insertar))
-                    .addComponent(cmd_buscar, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_insertar)
+                    .addComponent(cmd_eliminarTodo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                    .addComponent(cmd_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmd_insertar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -494,7 +531,9 @@ public class PPal extends javax.swing.JFrame {
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lb_total, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(263, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(cmd_finalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(195, Short.MAX_VALUE))
         );
 
         PanelVender.setBounds(0, 0, 990, 630);
@@ -532,6 +571,7 @@ public class PPal extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(Tabla_Stock);
 
+        cmd_Todo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_Todo.setText("Mostrar Todo");
         cmd_Todo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -539,27 +579,32 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        cmd_Bajo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_Bajo.setText("Mostrar Stock Bajo");
+        cmd_Bajo.setMaximumSize(new java.awt.Dimension(123, 35));
+        cmd_Bajo.setMinimumSize(new java.awt.Dimension(123, 35));
+        cmd_Bajo.setPreferredSize(new java.awt.Dimension(123, 35));
         cmd_Bajo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_BajoActionPerformed(evt);
             }
         });
 
-        txt_Busqueda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txt_Busqueda.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txt_Busqueda.setForeground(new java.awt.Color(153, 153, 153));
         txt_Busqueda.setText("Búsqueda");
+        txt_Busqueda.setPreferredSize(new java.awt.Dimension(75, 35));
         txt_Busqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_BusquedaActionPerformed(evt);
             }
         });
         txt_Busqueda.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txt_BusquedaFocusGained(evt);
-            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_BusquedaFocusLost(evt);
+            }
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_BusquedaFocusGained(evt);
             }
         });
         txt_Busqueda.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -580,6 +625,7 @@ public class PPal extends javax.swing.JFrame {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        cmd_Aplicar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_Aplicar.setText("Aplicar Cambios");
         cmd_Aplicar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -599,47 +645,47 @@ public class PPal extends javax.swing.JFrame {
                         .addGap(44, 44, 44)
                         .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmd_Bajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmd_Todo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmd_Todo, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 316, Short.MAX_VALUE)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cmd_Aplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmd_Aplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PanelStockLayout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(PanelStockLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txt_Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cmd_Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(34, 34, 34))
         );
         PanelStockLayout.setVerticalGroup(
             PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelStockLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmd_Buscar))
+                .addGap(20, 20, 20)
+                .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmd_Buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_Busqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                 .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(PanelStockLayout.createSequentialGroup()
-                            .addComponent(cmd_Todo)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmd_Bajo))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelStockLayout.createSequentialGroup()
-                            .addComponent(cmd_Aplicar)
-                            .addGap(30, 30, 30)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelStockLayout.createSequentialGroup()
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                    .addGroup(PanelStockLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(PanelStockLayout.createSequentialGroup()
+                                .addComponent(cmd_Todo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmd_Bajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(PanelStockLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(cmd_Aplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         PanelStock.setBounds(0, 0, 770, 450);
@@ -714,7 +760,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -763,7 +809,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -797,11 +843,21 @@ public class PPal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cmd_6ActionPerformed
 
-    private void cmd_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_buscarActionPerformed
+    private void cmd_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_eliminarActionPerformed
+
+        //para eliminar un articulo usaremos el metodo de actualizar precios, que borrara la fila al estar puesta a 0
+        int fila = Tabla_Vender.getSelectedRow();
+        DefaultTableModel modelo = (DefaultTableModel) Tabla_Vender.getModel();
+
+        if (fila >= 0 && fila < Tabla_Vender.getRowCount()) {
+
+            modelo.setValueAt(0, fila, 2);
+
+        }
 
         actualizarPrecios();
 
-    }//GEN-LAST:event_cmd_buscarActionPerformed
+    }//GEN-LAST:event_cmd_eliminarActionPerformed
 
     private void cmd_insertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_insertarActionPerformed
 
@@ -813,7 +869,7 @@ public class PPal extends javax.swing.JFrame {
                 if (p.getCod_barras() > 0) {
                     insertarLineaVenta(p);
                 }
-                
+
                 cmd_insertar.requestFocusInWindow();
                 txt_insertar.requestFocusInWindow();
 
@@ -844,7 +900,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -881,7 +937,7 @@ public class PPal extends javax.swing.JFrame {
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
 
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -925,7 +981,7 @@ public class PPal extends javax.swing.JFrame {
         if (getFocusOwner().getClass() == JTable.class) {
 
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1110,7 +1166,7 @@ public class PPal extends javax.swing.JFrame {
         if (getFocusOwner().getClass() == JTable.class) {
 
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1149,7 +1205,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1199,7 +1255,7 @@ public class PPal extends javax.swing.JFrame {
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
 
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1248,7 +1304,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1297,7 +1353,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1346,7 +1402,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1395,7 +1451,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1444,7 +1500,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1488,7 +1544,7 @@ public class PPal extends javax.swing.JFrame {
         for (int i = 0; i < n; i++) {
 
             preciosUnitarios.set(i, eliminarCerosALaDerecha(String.valueOf(temp.getValueAt(i, 3))));
-            System.err.println(eliminarCerosALaDerecha(String.valueOf(temp.getValueAt(i, 3))));
+
         }
 
         actualizarPrecios();
@@ -1515,7 +1571,7 @@ public class PPal extends javax.swing.JFrame {
 
             int col = ((JTable) foco).getSelectedColumn();
             int fila = ((JTable) foco).getSelectedRow();
-            TableModel modelo = ((JTable) foco).getModel();
+            DefaultTableModel modelo = (DefaultTableModel) ((JTable) foco).getModel();
 
             if (col >= 0 && col < modelo.getColumnCount() && fila >= 0 && fila < modelo.getRowCount()) {
 
@@ -1556,6 +1612,64 @@ public class PPal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cmd_CEActionPerformed
 
+    private void cmd_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_finalizarActionPerformed
+
+        ArrayList<Ticket_Producto> lista = new ArrayList<>();
+        DefaultTableModel modelo = (DefaultTableModel) Tabla_Vender.getModel();
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+            lista.add(new Ticket_Producto(0, ((Integer) modelo.getValueAt(i, 0)), ((Integer) modelo.getValueAt(i, 2)), ((Float) modelo.getValueAt(i, 3))));
+
+        }
+        try {
+            Ticket compra = new Ticket(lista);
+            compra.insertar();
+            compra.imprimir_ticket();
+
+            int n = modelo.getRowCount();
+
+            for (int i = 0; i < n; i++) {
+
+                modelo.removeRow(0);
+
+            }
+
+            actualizarPrecios();
+
+            Panel.aviso("Ticket Creado con Exito", compra.toString());
+
+        } catch (SQLException ex) {
+            Panel.error("Error SQL", "Compruebe que ningun programa este usando la bas de datos");
+        } catch (IOException ex) {
+            Panel.error("Error Fichero", "Compruebe que la carpeta tickets es accesible");
+        }
+
+    }//GEN-LAST:event_cmd_finalizarActionPerformed
+
+    private void cmd_eliminarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_eliminarTodoActionPerformed
+
+        //Solo se borra cuando hay algun articulo y si lo confirma el usuario
+        if (Tabla_Vender.getRowCount() > 0) {
+
+            int respuesta = Panel.confirmacion_si_no("Confirmacion", "¿Desea eliminar la compra actual?");
+
+            if (respuesta == 0) {
+
+                DefaultTableModel modelo = (DefaultTableModel) Tabla_Vender.getModel();
+                int n = modelo.getRowCount();
+
+                for (int i = 0; i < n; i++) {
+
+                    modelo.removeRow(0);
+
+                }
+
+                actualizarPrecios();
+            }
+        }
+    }//GEN-LAST:event_cmd_eliminarTodoActionPerformed
+
     private void insertarLineaVenta(Producto p) {
 
         DefaultTableModel temp = (DefaultTableModel) Tabla_Vender.getModel();
@@ -1569,7 +1683,7 @@ public class PPal extends javax.swing.JFrame {
         int i = 0;
         while (!existe && i < n) {
 
-            if ((Integer)temp.getValueAt(i, 0) == p.getCod_barras()) {
+            if ((Integer) temp.getValueAt(i, 0) == p.getCod_barras()) {
                 existe = true;
             } else {
                 i++;
@@ -1594,7 +1708,7 @@ public class PPal extends javax.swing.JFrame {
 
             int aux;
             aux = (Integer) temp.getValueAt(i, 2);
-            temp.setValueAt(aux+1, i, 2);
+            temp.setValueAt(aux + 1, i, 2);
 
         }
 
@@ -1661,10 +1775,11 @@ public class PPal extends javax.swing.JFrame {
             }
         }
 
-        for (int i = 0; i < filasVacias.size(); i++) {
+        //Si borramos mas de un elemento alteramos el indice d elos siguientes por lo que por seguridad lo hacremos en orden inverso
+        for (int i = filasVacias.size() - 1; i >= 0; i--) {
 
             temp.removeRow(filasVacias.get(i));
-            preciosUnitarios.remove(i);
+            preciosUnitarios.remove(filasVacias.get(i));
 
         }
 
@@ -1723,17 +1838,17 @@ public class PPal extends javax.swing.JFrame {
             total += (float) temp.getValueAt(i, 4);
 
         }
-        
+
         String aux = String.valueOf(total);
-        
-        int indice=aux.indexOf(".");
-        
-        if(indice>0 && indice<aux.length()-3){
-            aux=aux.substring(0, indice+3);
+
+        int indice = aux.indexOf(".");
+
+        if (indice > 0 && indice < aux.length() - 3) {
+            aux = aux.substring(0, indice + 3);
         }
-        
+
         lb_total.setText("" + aux + " €");
-        
+
         return total;
     }
 
@@ -1781,7 +1896,9 @@ public class PPal extends javax.swing.JFrame {
     private javax.swing.JButton cmd_CE;
     private javax.swing.JButton cmd_Stock;
     private javax.swing.JButton cmd_Todo;
-    private javax.swing.JButton cmd_buscar;
+    private javax.swing.JButton cmd_eliminar;
+    private javax.swing.JButton cmd_eliminarTodo;
+    private javax.swing.JButton cmd_finalizar;
     private javax.swing.JButton cmd_insertar;
     private javax.swing.JButton cmd_mas;
     private javax.swing.JButton cmd_menos;

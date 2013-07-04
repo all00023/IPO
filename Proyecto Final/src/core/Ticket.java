@@ -38,6 +38,7 @@ public class Ticket {
     ArrayList<Ticket_Producto> lineasfactura;
 
     public Ticket() throws SQLException {
+
         Calendar aux = Calendar.getInstance();
         this.id = getNextId();
         lineasfactura = new ArrayList<>();
@@ -60,6 +61,8 @@ public class Ticket {
 
         fecha = dia + "/" + mes + "/" + año;
         hora = _hora + ":" + minuto;
+        
+        calcularTotal();
 
     }
 
@@ -102,13 +105,38 @@ public class Ticket {
         resultados.close();
     }
 
-    public Ticket(List<Ticket_Producto> list) {
+    public Ticket(List<Ticket_Producto> list) throws SQLException {
+
+        Calendar aux = Calendar.getInstance();
+        this.id = getNextId();
+        
+        String dia = String.valueOf(aux.get(Calendar.DAY_OF_MONTH)),
+                mes = String.valueOf(aux.get(Calendar.MONTH) + 1), año = String.valueOf(aux.get(Calendar.YEAR)),
+                minuto = String.valueOf(aux.get(Calendar.MINUTE)), _hora = String.valueOf(aux.get(Calendar.HOUR_OF_DAY));
+
+        if (dia.length() < 2) {
+            dia = '0' + dia;
+        }
+        if (mes.length() < 2) {
+            mes = '0' + mes;
+        }
+        if (minuto.length() < 2) {
+            minuto = '0' + minuto;
+        }
+        if (_hora.length() < 2) {
+            _hora = '0' + _hora;
+        }
+
+        fecha = dia + "/" + mes + "/" + año;
+        hora = _hora + ":" + minuto;
 
         for (int i = 0; i < list.size(); i++) {
             list.get(i).setIdticket(id);
         }
 
         lineasfactura = new ArrayList<>(list);
+        
+        calcularTotal();
 
     }
 
@@ -118,7 +146,7 @@ public class Ticket {
 
         for (int i = 0; i < lineasfactura.size(); i++) {
 
-            total += lineasfactura.get(i).getPrecio();
+            total += lineasfactura.get(i).getPrecio()*lineasfactura.get(i).getCantidad();
 
         }
 
@@ -145,6 +173,8 @@ public class Ticket {
             total += precio * cantidad;
 
         }
+        
+        calcularTotal();
 
         return !encontrado;
 
@@ -164,6 +194,8 @@ public class Ticket {
             }
 
         }
+        
+        calcularTotal();
 
         return encontrado;
 
@@ -182,25 +214,25 @@ public class Ticket {
             Operaciones db = new Operaciones("BBDD\\TPV");
             String bw = "";
 
-            bw.concat(NombreCompañia);
-            bw.concat("\n");
-            bw.concat(CIF);
-            bw.concat("\n");
-            bw.concat("\n");
-            bw.concat(Direccion);
-            bw.concat("\n");;
-            bw.concat(Ciudad);
-            bw.concat("\n");
-            bw.concat(Provincia);
-            bw.concat("\n");
-            bw.concat("\n");
-            bw.concat(fecha + "  " + hora);
-            bw.concat("\n");
-            bw.concat("\n");
-            bw.concat("=====================================");
-            bw.concat("\n");
-            bw.concat("Art  Cant  Producto          Precio");
-            bw.concat("\n");
+            bw+=NombreCompañia;
+            bw+="\n";
+            bw+=CIF;
+            bw+="\n";
+            bw+="\n";
+            bw+=Direccion;
+            bw+="\n";
+            bw+=Ciudad;
+            bw+="\n";
+            bw+=Provincia;
+            bw+="\n";
+            bw+="\n";
+            bw+=fecha + "  " + hora;
+            bw+="\n";
+            bw+="\n";
+            bw+="=====================================";
+            bw+="\n";
+            bw+="Art  Cant  Producto          Precio";
+            bw+="\n";
 
             aux = "SELECT nombre FROM productos WHERE cod_barras=" + lineasfactura.get(0).getIdproducto();
             for (int i = 1; i < lineasfactura.size(); i++) {
@@ -217,7 +249,7 @@ public class Ticket {
             } catch (SQLException ex) {
                 Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             for (int i = 0; i < lineasfactura.size(); i++) {
                 try {
                     nombre = resultados.getString(1);
@@ -229,13 +261,20 @@ public class Ticket {
                 } catch (SQLException ex) {
                     Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
+                //rellenamos con espacios si no llegamos a los 15 caracteres
+                for (int j = nombre.length(); j <= 15; j++) {
+                    
+                    nombre+=" ";
+                    
+                }
 
-                bw.concat("\n");
-                bw.concat(lineasfactura.get(i).getIdproducto() + "  "
+                bw+="\n";
+                bw+=lineasfactura.get(i).getIdproducto() + "  "
                         + lineasfactura.get(i).getCantidad() + "    "
                         + nombre.substring(0, 15) + "   "
-                        + lineasfactura.get(i).getPrecio() + " €");
-                bw.concat("\n");
+                        + lineasfactura.get(i).getPrecio() + " €";
+                bw+="\n";
 
             }
             try {
@@ -243,14 +282,14 @@ public class Ticket {
             } catch (SQLException ex) {
                 Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
             }
-            bw.concat("=====================================");
-            bw.concat("\n");
-            bw.concat("\n");
-            bw.concat("                     Total:  " + total + " €");
-            bw.concat("\n");
-            bw.concat("\n");
-            bw.concat("---------21% I.V.A. Incluido---------");
-            
+            bw+="=====================================";
+            bw+="\n";
+            bw+="\n";
+            bw+="                     Total:  " + total + " €";
+            bw+="\n";
+            bw+="\n";
+            bw+="---------21% I.V.A. Incluido---------";
+
 
             return bw;
 
@@ -258,7 +297,7 @@ public class Ticket {
         } else {
             Panel.error("ERROR", "Ticket Vacio.");
         }
-        
+
         return "";
 
     }
@@ -308,11 +347,18 @@ public class Ticket {
             ResultSet resultados = db.consultar(aux);
 
             resultados.next();
-
+            
             for (int i = 0; i < lineasfactura.size(); i++) {
 
                 nombre = resultados.getString(1);
                 resultados.next();
+                
+                //rellenamos con espacios si no llegamos a los 15 caracteres
+                for (int j = nombre.length(); j <= 15; j++) {
+                    
+                    nombre+=" ";
+                    
+                }
 
                 bw.newLine();
                 bw.write(lineasfactura.get(i).getIdproducto() + "  "
@@ -334,12 +380,21 @@ public class Ticket {
 
             bw.close();
 
-            Desktop.getDesktop().open(new File("tickets" + File.separatorChar + "ticket" + id + ".txt"));
+//            Desktop.getDesktop().open(new File("tickets" + File.separatorChar + "ticket" + id + ".txt"));
 
         } else {
             Panel.error("ERROR", "Ticket Vacio.");
         }
     }
+    
+    public void abrirTicket(){
+        try {
+            Desktop.getDesktop().open(new File("tickets" + File.separatorChar + "ticket" + id + ".txt"));
+        } catch (IOException ex) {
+            Panel.error("No se encuentra el ticket", "El fichero no se encuentra en la carpeta ticket o esta siendo usado por otra aplicación");
+        }
+    }
+    
 
     public static int getNextId() throws SQLException {
 
@@ -348,7 +403,7 @@ public class Ticket {
         ResultSet resultados;
 
         resultados = db.consultar("SELECT id FROM ticket WHERE id=(SELECT MAX(id) FROM ticket)");
-        
+
         int aux = resultados.getInt("id");
         resultados.close();
         return aux + 1;
@@ -358,7 +413,7 @@ public class Ticket {
 
         Operaciones db = new Operaciones("BBDD\\TPV");
 
-        ResultSet resultados = db.consultar("SELECT id FROM productos WHERE id=" + id);
+        ResultSet resultados = db.consultar("SELECT id FROM ticket WHERE id=" + id);
 
         if (!resultados.isClosed()) {
             Panel.error("ERROR", "El ticket ya existe en la Base de Datos.");

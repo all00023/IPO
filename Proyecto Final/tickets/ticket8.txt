@@ -1,0 +1,20 @@
+Alibel
+A12345678
+
+C\ Falsa 123
+Huelva 21001 
+Huelva
+
+04/07/2013  21:43
+
+=====================================
+Art  Cant  Producto          Precio
+
+1001  25    FORTUNA ROJO BL   4.1 €
+
+1111  1    DIANA DURO        56.0 €
+=====================================
+
+                     Total:  158.5 €
+
+---------21% I.V.A. Incluido---------

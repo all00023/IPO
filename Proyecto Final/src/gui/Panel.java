@@ -29,7 +29,13 @@ public class Panel {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        
-        
+    }
+    
+    public static void aviso (String titulo, String mensaje){
+        try {
+            javax.swing.JOptionPane.showMessageDialog(null, mensaje, titulo, JOptionPane.CLOSED_OPTION);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 }
