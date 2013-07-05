@@ -10,6 +10,7 @@ import core.Ticket_Producto;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class PPal extends javax.swing.JFrame {
         initComponents();
 
 //        setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Iconos.100px/vender002.png")));
-
+        
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
 
@@ -56,6 +57,15 @@ public class PPal extends javax.swing.JFrame {
         setLocation((x) / 2, ((y) / 2));
     }
 
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+         getImage(ClassLoader.getSystemResource("Iconos/16px/cigarette.png"));
+
+
+        return retValue;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,8 +79,6 @@ public class PPal extends javax.swing.JFrame {
         Bar_Herramientas = new javax.swing.JToolBar();
         cmd_vender = new javax.swing.JButton();
         cmd_Stock = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         Panel_Capas = new javax.swing.JLayeredPane();
         PanelVender = new javax.swing.JPanel();
         txt_insertar = new javax.swing.JTextField();
@@ -107,7 +115,7 @@ public class PPal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         cmd_Aplicar = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
-        PanelArticulos = new javax.swing.JPanel();
+        PanelPrincipal = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,6 +129,9 @@ public class PPal extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TPV ESTANCO");
+        setBackground(new java.awt.Color(185, 221, 239));
+        setIconImage(getIconImage());
         setName("Ppal"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -138,9 +149,11 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        Bar_Herramientas.setBackground(new java.awt.Color(185, 221, 239));
         Bar_Herramientas.setFloatable(false);
 
-        cmd_vender.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cmd_vender.setBackground(new java.awt.Color(224, 251, 251));
+        cmd_vender.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         cmd_vender.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/vender02.png"))); // NOI18N
         cmd_vender.setText("Vender");
         cmd_vender.setToolTipText("");
@@ -158,7 +171,8 @@ public class PPal extends javax.swing.JFrame {
         });
         Bar_Herramientas.add(cmd_vender);
 
-        cmd_Stock.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cmd_Stock.setBackground(new java.awt.Color(224, 251, 251));
+        cmd_Stock.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         cmd_Stock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/stock.png"))); // NOI18N
         cmd_Stock.setText("Control Stock");
         cmd_Stock.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -175,32 +189,12 @@ public class PPal extends javax.swing.JFrame {
         });
         Bar_Herramientas.add(cmd_Stock);
 
-        jButton2.setText("jButton2");
-        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setMaximumSize(new java.awt.Dimension(100, 100));
-        jButton2.setMinimumSize(new java.awt.Dimension(100, 100));
-        jButton2.setPreferredSize(new java.awt.Dimension(100, 100));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        Bar_Herramientas.add(jButton2);
-
-        jButton3.setText("jButton3");
-        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setMaximumSize(new java.awt.Dimension(100, 100));
-        jButton3.setMinimumSize(new java.awt.Dimension(100, 100));
-        jButton3.setPreferredSize(new java.awt.Dimension(100, 100));
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        Bar_Herramientas.add(jButton3);
-
-        Panel_Capas.setBackground(new java.awt.Color(51, 255, 0));
+        Panel_Capas.setBackground(new java.awt.Color(185, 221, 239));
         Panel_Capas.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        PanelVender.setBackground(new java.awt.Color(204, 204, 204));
+        PanelVender.setBackground(new java.awt.Color(185, 221, 239));
 
-        txt_insertar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_insertar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txt_insertar.setForeground(new java.awt.Color(102, 102, 102));
         txt_insertar.setText("Inserte codigo de Barras");
         txt_insertar.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -209,15 +203,16 @@ public class PPal extends javax.swing.JFrame {
             }
         });
         txt_insertar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_insertarKeyTyped(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_insertarKeyPressed(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_insertarKeyTyped(evt);
+            }
         });
 
-        cmd_insertar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_insertar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cmd_insertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/add.png"))); // NOI18N
         cmd_insertar.setText("Inserta Artículo");
         cmd_insertar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,6 +220,7 @@ public class PPal extends javax.swing.JFrame {
             }
         });
 
+        Tabla_Vender.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         Tabla_Vender.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -260,7 +256,8 @@ public class PPal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Tabla_Vender);
 
-        cmd_eliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_eliminar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cmd_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/delete.png"))); // NOI18N
         cmd_eliminar.setText("Eliminar Artículo");
         cmd_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -473,6 +470,7 @@ public class PPal extends javax.swing.JFrame {
         lb_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         cmd_finalizar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        cmd_finalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/shoppingbasket.png"))); // NOI18N
         cmd_finalizar.setText("Finalizar Compra");
         cmd_finalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -481,6 +479,7 @@ public class PPal extends javax.swing.JFrame {
         });
 
         cmd_eliminarTodo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_eliminarTodo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/erase.png"))); // NOI18N
         cmd_eliminarTodo.setText("Borrar Compra");
         cmd_eliminarTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -494,24 +493,24 @@ public class PPal extends javax.swing.JFrame {
             PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(PanelVenderLayout.createSequentialGroup()
                         .addComponent(txt_insertar, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmd_insertar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(37, 37, 37)
                         .addComponent(cmd_eliminar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
-                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmd_eliminarTodo, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(cmd_finalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(PanelVenderLayout.createSequentialGroup()
                             .addComponent(jLabel1)
                             .addGap(18, 18, 18)
                             .addComponent(lb_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(cmd_eliminarTodo))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(31, 31, 31))
         );
         PanelVenderLayout.setVerticalGroup(
@@ -521,8 +520,8 @@ public class PPal extends javax.swing.JFrame {
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txt_insertar)
                     .addComponent(cmd_eliminarTodo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(cmd_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmd_insertar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmd_insertar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmd_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -539,7 +538,7 @@ public class PPal extends javax.swing.JFrame {
         PanelVender.setBounds(0, 0, 990, 630);
         Panel_Capas.add(PanelVender, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        PanelStock.setBackground(new java.awt.Color(204, 204, 204));
+        PanelStock.setBackground(new java.awt.Color(185, 221, 239));
 
         Tabla_Stock.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -572,6 +571,7 @@ public class PPal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(Tabla_Stock);
 
         cmd_Todo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_Todo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/eye.png"))); // NOI18N
         cmd_Todo.setText("Mostrar Todo");
         cmd_Todo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -580,6 +580,7 @@ public class PPal extends javax.swing.JFrame {
         });
 
         cmd_Bajo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_Bajo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/warning.png"))); // NOI18N
         cmd_Bajo.setText("Mostrar Stock Bajo");
         cmd_Bajo.setMaximumSize(new java.awt.Dimension(123, 35));
         cmd_Bajo.setMinimumSize(new java.awt.Dimension(123, 35));
@@ -626,6 +627,7 @@ public class PPal extends javax.swing.JFrame {
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         cmd_Aplicar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_Aplicar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/OK.png"))); // NOI18N
         cmd_Aplicar.setText("Aplicar Cambios");
         cmd_Aplicar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -645,13 +647,13 @@ public class PPal extends javax.swing.JFrame {
                         .addGap(44, 44, 44)
                         .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmd_Bajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmd_Todo, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                            .addComponent(cmd_Todo, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 316, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmd_Aplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(5, 5, 5)
+                        .addComponent(cmd_Aplicar))
                     .addGroup(PanelStockLayout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -660,7 +662,7 @@ public class PPal extends javax.swing.JFrame {
                                 .addComponent(txt_Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cmd_Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))))
                 .addGap(34, 34, 34))
         );
         PanelStockLayout.setVerticalGroup(
@@ -671,7 +673,7 @@ public class PPal extends javax.swing.JFrame {
                     .addComponent(cmd_Buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txt_Busqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
                 .addGroup(PanelStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelStockLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -691,21 +693,21 @@ public class PPal extends javax.swing.JFrame {
         PanelStock.setBounds(0, 0, 770, 450);
         Panel_Capas.add(PanelStock, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        PanelArticulos.setBackground(new java.awt.Color(204, 204, 204));
+        PanelPrincipal.setBackground(new java.awt.Color(185, 221, 239));
 
-        javax.swing.GroupLayout PanelArticulosLayout = new javax.swing.GroupLayout(PanelArticulos);
-        PanelArticulos.setLayout(PanelArticulosLayout);
-        PanelArticulosLayout.setHorizontalGroup(
-            PanelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout PanelPrincipalLayout = new javax.swing.GroupLayout(PanelPrincipal);
+        PanelPrincipal.setLayout(PanelPrincipalLayout);
+        PanelPrincipalLayout.setHorizontalGroup(
+            PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 990, Short.MAX_VALUE)
         );
-        PanelArticulosLayout.setVerticalGroup(
-            PanelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        PanelPrincipalLayout.setVerticalGroup(
+            PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 630, Short.MAX_VALUE)
         );
 
-        PanelArticulos.setBounds(0, 0, 990, 630);
-        Panel_Capas.add(PanelArticulos, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        PanelPrincipal.setBounds(0, 0, 990, 630);
+        Panel_Capas.add(PanelPrincipal, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1878,7 +1880,7 @@ public class PPal extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar Bar_Herramientas;
-    private javax.swing.JPanel PanelArticulos;
+    private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JPanel PanelStock;
     private javax.swing.JPanel PanelVender;
     private javax.swing.JLayeredPane Panel_Capas;
@@ -1908,8 +1910,6 @@ public class PPal extends javax.swing.JFrame {
     private javax.swing.JButton cmd_menos;
     private javax.swing.JButton cmd_punto;
     private javax.swing.JButton cmd_vender;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -65,10 +65,9 @@ public class Producto {
             nVentas = resultados.getInt("nVentas");
             resultados.close();
         } else {
-
+            Toolkit.getDefaultToolkit().beep();
             Panel.error("ERROR", "No existe el producto.");
             this.cod_barras = -1;
-            Toolkit.getDefaultToolkit().beep();
         }
 
     }
