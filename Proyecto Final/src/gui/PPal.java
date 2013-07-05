@@ -16,6 +16,8 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -32,6 +34,7 @@ public class PPal extends javax.swing.JFrame {
     private ArrayList<Producto> listaStock = new ArrayList<>();
 //    private ArrayList<Ticket_Producto> listaVender = new ArrayList<>();
     private ArrayList<String> preciosUnitarios = new ArrayList<>();
+    Ticket ticketActual = null;
 
     /**
      * Creates new form PPal
@@ -44,9 +47,10 @@ public class PPal extends javax.swing.JFrame {
         initComponents();
 
 //        setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Iconos.100px/vender002.png")));
-        
+
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
+        PanelTickets.setVisible(false);
 
     }
 
@@ -60,12 +64,12 @@ public class PPal extends javax.swing.JFrame {
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-         getImage(ClassLoader.getSystemResource("Iconos/16px/cigarette.png"));
+                getImage(ClassLoader.getSystemResource("Iconos/16px/cigarette.png"));
 
 
         return retValue;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,10 +79,10 @@ public class PPal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         Bar_Herramientas = new javax.swing.JToolBar();
         cmd_vender = new javax.swing.JButton();
         cmd_Stock = new javax.swing.JButton();
+        cmd_Tickets = new javax.swing.JButton();
         Panel_Capas = new javax.swing.JLayeredPane();
         PanelVender = new javax.swing.JPanel();
         txt_insertar = new javax.swing.JTextField();
@@ -115,22 +119,25 @@ public class PPal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         cmd_Aplicar = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
+        PanelTickets = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        Tabla_Tickets = new javax.swing.JTable();
+        cmd_TodoTickets = new javax.swing.JButton();
+        txt_Desde = new javax.swing.JLabel();
+        txt_Hasta = new javax.swing.JLabel();
+        cmd_AplicarFechas = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        areaTickets = new javax.swing.JTextArea();
+        cmd_abrirTicket = new javax.swing.JButton();
+        cmd_imprimirTicket = new javax.swing.JButton();
+        fechaDesde = new com.toedter.calendar.JDateChooser();
+        fechaHasta = new com.toedter.calendar.JDateChooser();
         PanelPrincipal = new javax.swing.JPanel();
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TPV ESTANCO");
         setBackground(new java.awt.Color(185, 221, 239));
+        setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         setIconImage(getIconImage());
         setName("Ppal"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -189,14 +196,31 @@ public class PPal extends javax.swing.JFrame {
         });
         Bar_Herramientas.add(cmd_Stock);
 
+        cmd_Tickets.setBackground(new java.awt.Color(224, 251, 251));
+        cmd_Tickets.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        cmd_Tickets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/stock.png"))); // NOI18N
+        cmd_Tickets.setText("Control Tickets");
+        cmd_Tickets.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cmd_Tickets.setFocusable(false);
+        cmd_Tickets.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cmd_Tickets.setMaximumSize(new java.awt.Dimension(100, 100));
+        cmd_Tickets.setMinimumSize(new java.awt.Dimension(100, 100));
+        cmd_Tickets.setPreferredSize(new java.awt.Dimension(100, 100));
+        cmd_Tickets.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        cmd_Tickets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_TicketsActionPerformed(evt);
+            }
+        });
+        Bar_Herramientas.add(cmd_Tickets);
+
         Panel_Capas.setBackground(new java.awt.Color(185, 221, 239));
-        Panel_Capas.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         PanelVender.setBackground(new java.awt.Color(185, 221, 239));
 
         txt_insertar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txt_insertar.setForeground(new java.awt.Color(102, 102, 102));
-        txt_insertar.setText("Inserte codigo de Barras");
+        txt_insertar.setText("Inserte Código de Barras");
         txt_insertar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_insertarFocusGained(evt);
@@ -271,6 +295,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_7.setText("7");
         cmd_7.setFocusable(false);
+        cmd_7.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_7.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_7.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_7ActionPerformed(evt);
@@ -280,6 +307,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_8.setText("8");
         cmd_8.setFocusable(false);
+        cmd_8.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_8.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_8.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_8ActionPerformed(evt);
@@ -289,6 +319,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_4.setText("4");
         cmd_4.setFocusable(false);
+        cmd_4.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_4.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_4.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_4ActionPerformed(evt);
@@ -298,6 +331,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_6.setText("6");
         cmd_6.setFocusable(false);
+        cmd_6.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_6.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_6.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_6ActionPerformed(evt);
@@ -307,6 +343,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_9.setText("9");
         cmd_9.setFocusable(false);
+        cmd_9.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_9.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_9.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_9ActionPerformed(evt);
@@ -316,6 +355,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_1.setText("1");
         cmd_1.setFocusable(false);
+        cmd_1.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_1.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_1.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_1ActionPerformed(evt);
@@ -325,6 +367,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_5.setText("5");
         cmd_5.setFocusable(false);
+        cmd_5.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_5.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_5.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_5ActionPerformed(evt);
@@ -334,6 +379,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_2.setText("2");
         cmd_2.setFocusable(false);
+        cmd_2.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_2.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_2.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_2ActionPerformed(evt);
@@ -343,6 +391,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_3.setText("3");
         cmd_3.setFocusable(false);
+        cmd_3.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_3.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_3.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_3ActionPerformed(evt);
@@ -352,6 +403,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_0.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_0.setText("0");
         cmd_0.setFocusable(false);
+        cmd_0.setMaximumSize(new java.awt.Dimension(50, 50));
+        cmd_0.setMinimumSize(new java.awt.Dimension(50, 50));
+        cmd_0.setPreferredSize(new java.awt.Dimension(50, 50));
         cmd_0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_0ActionPerformed(evt);
@@ -370,6 +424,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_menos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_menos.setText("-");
         cmd_menos.setFocusable(false);
+        cmd_menos.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_menos.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_menos.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_menos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_menosActionPerformed(evt);
@@ -379,6 +436,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_punto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_punto.setText(".");
         cmd_punto.setFocusable(false);
+        cmd_punto.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_punto.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_punto.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_punto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_puntoActionPerformed(evt);
@@ -388,6 +448,9 @@ public class PPal extends javax.swing.JFrame {
         cmd_CE.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cmd_CE.setText("CE");
         cmd_CE.setFocusable(false);
+        cmd_CE.setMaximumSize(new java.awt.Dimension(60, 60));
+        cmd_CE.setMinimumSize(new java.awt.Dimension(60, 60));
+        cmd_CE.setPreferredSize(new java.awt.Dimension(60, 60));
         cmd_CE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmd_CEActionPerformed(evt);
@@ -400,33 +463,33 @@ public class PPal extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(cmd_7, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmd_8, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmd_9, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cmd_4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmd_1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(cmd_5, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cmd_6, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(cmd_2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmd_3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cmd_0, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmd_punto, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(cmd_0, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmd_punto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(cmd_1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmd_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmd_3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmd_4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmd_7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(cmd_8, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmd_9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(cmd_5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmd_6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmd_CE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmd_mas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmd_menos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -436,32 +499,31 @@ public class PPal extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmd_9, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmd_CE, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmd_8, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmd_7, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmd_7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmd_8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmd_9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmd_CE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmd_6, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmd_4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmd_5, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmd_3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmd_1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmd_2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmd_4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmd_5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmd_6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmd_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmd_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmd_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(cmd_mas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmd_0, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmd_punto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmd_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmd_punto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmd_0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmd_menos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -493,25 +555,30 @@ public class PPal extends javax.swing.JFrame {
             PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(PanelVenderLayout.createSequentialGroup()
                         .addComponent(txt_insertar, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmd_insertar)
-                        .addGap(37, 37, 37)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                         .addComponent(cmd_eliminar))
                     .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmd_eliminarTodo, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(cmd_finalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(PanelVenderLayout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(lb_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(31, 31, 31))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
+                        .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmd_finalizar, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                            .addGroup(PanelVenderLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(lb_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(31, 31, 31))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelVenderLayout.createSequentialGroup()
+                        .addComponent(cmd_eliminarTodo)
+                        .addContainerGap())))
         );
         PanelVenderLayout.setVerticalGroup(
             PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -519,20 +586,21 @@ public class PPal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txt_insertar)
-                    .addComponent(cmd_eliminarTodo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(cmd_insertar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmd_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmd_insertar, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmd_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmd_eliminarTodo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27)
                 .addGroup(PanelVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lb_total, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(cmd_finalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(195, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         PanelVender.setBounds(0, 0, 990, 630);
@@ -693,7 +761,159 @@ public class PPal extends javax.swing.JFrame {
         PanelStock.setBounds(0, 0, 770, 450);
         Panel_Capas.add(PanelStock, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        PanelPrincipal.setBackground(new java.awt.Color(185, 221, 239));
+        Tabla_Tickets.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Identificador", "Fecha", "Hora"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        Tabla_Tickets.setMinimumSize(new java.awt.Dimension(45, 600));
+        Tabla_Tickets.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Tabla_TicketsMouseClicked(evt);
+            }
+        });
+        Tabla_Tickets.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                Tabla_TicketsKeyReleased(evt);
+            }
+        });
+        jScrollPane4.setViewportView(Tabla_Tickets);
+        Tabla_Tickets.getColumnModel().getColumn(0).setResizable(false);
+        Tabla_Tickets.getColumnModel().getColumn(0).setPreferredWidth(100);
+        Tabla_Tickets.getColumnModel().getColumn(1).setResizable(false);
+        Tabla_Tickets.getColumnModel().getColumn(1).setPreferredWidth(80);
+        Tabla_Tickets.getColumnModel().getColumn(2).setResizable(false);
+        Tabla_Tickets.getColumnModel().getColumn(2).setPreferredWidth(50);
+
+        cmd_TodoTickets.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_TodoTickets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/eye.png"))); // NOI18N
+        cmd_TodoTickets.setText("Mostrar Todo");
+        cmd_TodoTickets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_TodoTicketsActionPerformed(evt);
+            }
+        });
+
+        txt_Desde.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_Desde.setText("Mostrar desde");
+
+        txt_Hasta.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_Hasta.setText("hasta");
+
+        cmd_AplicarFechas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_AplicarFechas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/OK.png"))); // NOI18N
+        cmd_AplicarFechas.setText("Aplicar Fechas");
+        cmd_AplicarFechas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_AplicarFechasActionPerformed(evt);
+            }
+        });
+
+        areaTickets.setEditable(false);
+        areaTickets.setColumns(20);
+        areaTickets.setRows(5);
+        jScrollPane3.setViewportView(areaTickets);
+
+        cmd_abrirTicket.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_abrirTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/eye.png"))); // NOI18N
+        cmd_abrirTicket.setText("Abrir Archivo");
+        cmd_abrirTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_abrirTicketActionPerformed(evt);
+            }
+        });
+
+        cmd_imprimirTicket.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmd_imprimirTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/24px/eye.png"))); // NOI18N
+        cmd_imprimirTicket.setText("Imprimir");
+        cmd_imprimirTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmd_imprimirTicketActionPerformed(evt);
+            }
+        });
+
+        fechaDesde.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        fechaHasta.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        javax.swing.GroupLayout PanelTicketsLayout = new javax.swing.GroupLayout(PanelTickets);
+        PanelTickets.setLayout(PanelTicketsLayout);
+        PanelTicketsLayout.setHorizontalGroup(
+            PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTicketsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(PanelTicketsLayout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(cmd_TodoTickets)
+                        .addGap(89, 89, 89)
+                        .addComponent(cmd_abrirTicket)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmd_imprimirTicket))
+                    .addGroup(PanelTicketsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addGroup(PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addGroup(PanelTicketsLayout.createSequentialGroup()
+                                .addComponent(txt_Desde)
+                                .addGap(18, 18, 18)
+                                .addGroup(PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(PanelTicketsLayout.createSequentialGroup()
+                                        .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txt_Hasta))
+                                    .addComponent(cmd_AplicarFechas))
+                                .addGap(18, 18, 18)
+                                .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 241, Short.MAX_VALUE)))))
+                .addGap(25, 25, 25))
+        );
+        PanelTicketsLayout.setVerticalGroup(
+            PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelTicketsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelTicketsLayout.createSequentialGroup()
+                        .addGroup(PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txt_Desde)
+                                .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_Hasta)
+                            .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmd_AplicarFechas, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PanelTicketsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmd_TodoTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmd_abrirTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmd_imprimirTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
+        );
+
+        PanelTickets.setBounds(0, 0, 990, 630);
+        Panel_Capas.add(PanelTickets, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout PanelPrincipalLayout = new javax.swing.GroupLayout(PanelPrincipal);
         PanelPrincipal.setLayout(PanelPrincipalLayout);
@@ -743,6 +963,7 @@ public class PPal extends javax.swing.JFrame {
 
         PanelVender.setSize(width, height);
         PanelStock.setSize(width, height);
+        PanelTickets.setSize(width, height);
 
         // Tenemos que redimensionar todos los paneles aqui:
     }//GEN-LAST:event_formComponentResized
@@ -863,12 +1084,13 @@ public class PPal extends javax.swing.JFrame {
 
     private void cmd_insertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_insertarActionPerformed
 
-        if (!txt_insertar.getText().equals("") || txt_insertar.getText().equals("Inserte Código de Barras")) {
+        if (!txt_insertar.getText().equals("") && !txt_insertar.getText().equals("Inserte Código de Barras")) {
 
             try {
 
                 Producto p = new Producto(Integer.parseInt(txt_insertar.getText()));
                 if (p.getCod_barras() > 0) {
+                    Toolkit.getDefaultToolkit().beep();
                     insertarLineaVenta(p);
                 }
 
@@ -876,7 +1098,7 @@ public class PPal extends javax.swing.JFrame {
                 txt_insertar.requestFocusInWindow();
 
             } catch (SQLException ex) {
-                Logger.getLogger(PPal.class.getName()).log(Level.SEVERE, null, ex);
+                Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
             }
 
         }
@@ -884,12 +1106,8 @@ public class PPal extends javax.swing.JFrame {
 
     private void cmd_StockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_StockActionPerformed
 
-        int width = Panel_Capas.getWidth();
-        int height = Panel_Capas.getHeight();
-        PanelStock.setSize(width, height);
         deshabilitarcapas(PanelStock);
-        PanelStock.setVisible(true);
-        Panel_Capas.moveToFront(PanelStock);
+
     }//GEN-LAST:event_cmd_StockActionPerformed
 
     private void cmd_puntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_puntoActionPerformed
@@ -1050,7 +1268,7 @@ public class PPal extends javax.swing.JFrame {
             try {
                 listaStock = Producto.busquedaStock(txt_Busqueda.getText());
             } catch (SQLException ex) {
-                Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
+                Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
             }
 
             for (int i = 0; i < listaStock.size(); i++) {
@@ -1110,7 +1328,7 @@ public class PPal extends javax.swing.JFrame {
         try {
             listaStock = Producto.consultarStock();
         } catch (SQLException ex) {
-            Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
+            Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
         }
 
         for (int i = 0; i < listaStock.size(); i++) {
@@ -1125,7 +1343,7 @@ public class PPal extends javax.swing.JFrame {
     }//GEN-LAST:event_cmd_BajoActionPerformed
 
     private void cmd_TodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_TodoActionPerformed
-        Toolkit.getDefaultToolkit().beep();
+
         DefaultTableModel temp = (DefaultTableModel) Tabla_Stock.getModel();
         Object[] fila = new Object[4];
         int filas = Tabla_Stock.getRowCount();
@@ -1141,7 +1359,7 @@ public class PPal extends javax.swing.JFrame {
         try {
             listaStock = Producto.consultarTodoStock();
         } catch (SQLException ex) {
-            Logger.getLogger(EstadoStock.class.getName()).log(Level.SEVERE, null, ex);
+            Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
         }
 
         for (int i = 0; i < listaStock.size(); i++) {
@@ -1616,37 +1834,40 @@ public class PPal extends javax.swing.JFrame {
 
     private void cmd_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_finalizarActionPerformed
 
-        ArrayList<Ticket_Producto> lista = new ArrayList<>();
-        DefaultTableModel modelo = (DefaultTableModel) Tabla_Vender.getModel();
+        if (Tabla_Vender.getRowCount() > 0) {//Si esta vacio el ticket damos error.
 
-        for (int i = 0; i < modelo.getRowCount(); i++) {
+            ArrayList<Ticket_Producto> lista = new ArrayList<>();
+            DefaultTableModel modelo = (DefaultTableModel) Tabla_Vender.getModel();
 
-            lista.add(new Ticket_Producto(0, ((Integer) modelo.getValueAt(i, 0)), ((Integer) modelo.getValueAt(i, 2)), ((Float) modelo.getValueAt(i, 3))));
+            for (int i = 0; i < modelo.getRowCount(); i++) {
 
-        }
-        try {
-            Ticket compra = new Ticket(lista);
-            compra.insertar();
-            compra.imprimir_ticket();
-
-            int n = modelo.getRowCount();
-
-            for (int i = 0; i < n; i++) {
-
-                modelo.removeRow(0);
+                lista.add(new Ticket_Producto(0, ((Integer) modelo.getValueAt(i, 0)), ((Integer) modelo.getValueAt(i, 2)), ((Float) modelo.getValueAt(i, 3))));
 
             }
-            
-            preciosUnitarios= new ArrayList<>();
+            try {
+                Ticket compra = new Ticket(lista);
+                compra.insertar();
+                compra.imprimir_ticket();
 
-            actualizarPrecios();
+                int n = modelo.getRowCount();
 
-            Panel.aviso("Ticket Creado con Exito", compra.toString());
+                for (int i = 0; i < n; i++) {
 
-        } catch (SQLException ex) {
-            Panel.error("Error SQL", "Compruebe que ningun programa este usando la bas de datos");
-        } catch (IOException ex) {
-            Panel.error("Error Fichero", "Compruebe que la carpeta tickets es accesible");
+                    modelo.removeRow(0);
+
+                }
+
+                preciosUnitarios = new ArrayList<>();
+
+                actualizarPrecios();
+
+                Panel.aviso("Ticket Creado con Exito", compra.toString());
+
+            } catch (SQLException ex) {
+                Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
+            } catch (IOException ex) {
+                Panel.error("Error Fichero", "Compruebe que la carpeta tickets es accesible");
+            }
         }
 
     }//GEN-LAST:event_cmd_finalizarActionPerformed
@@ -1668,13 +1889,169 @@ public class PPal extends javax.swing.JFrame {
                     modelo.removeRow(0);
 
                 }
-                
-                preciosUnitarios= new ArrayList<>();
-                
+
+                preciosUnitarios = new ArrayList<>();
+
                 actualizarPrecios();
             }
         }
     }//GEN-LAST:event_cmd_eliminarTodoActionPerformed
+
+    private void cmd_TicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_TicketsActionPerformed
+
+        deshabilitarcapas(PanelTickets);
+
+    }//GEN-LAST:event_cmd_TicketsActionPerformed
+
+    private void cmd_TodoTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_TodoTicketsActionPerformed
+
+        DefaultTableModel temp = (DefaultTableModel) Tabla_Tickets.getModel();
+        Object[] fila = new Object[3];
+        int filas = Tabla_Tickets.getRowCount();
+        ArrayList<ArrayList<String>> lista = new ArrayList<>();
+
+        for (int i = 0; i < filas; i++) {
+
+            temp.removeRow(0);
+
+        }
+
+        try {
+            lista = Ticket.consultarIds();
+        } catch (SQLException ex) {
+            Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
+        }
+
+        for (int i = 0; i < lista.size(); i++) {
+            fila[0] = lista.get(i).get(0);
+            fila[1] = lista.get(i).get(1);
+            fila[2] = lista.get(i).get(2);
+
+            temp.addRow(fila);
+        }
+
+    }//GEN-LAST:event_cmd_TodoTicketsActionPerformed
+
+    private void cmd_AplicarFechasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_AplicarFechasActionPerformed
+
+        DefaultTableModel temp = (DefaultTableModel) Tabla_Tickets.getModel();
+        Object[] fila = new Object[3];
+        int filas = Tabla_Tickets.getRowCount();
+        ArrayList<ArrayList<String>> lista = new ArrayList<>();
+
+        for (int i = 0; i < filas; i++) {
+
+            temp.removeRow(0);
+
+        }
+
+        if (fechaDesde.getDate() != null && fechaHasta.getDate() != null) {
+
+            Date fecha1 = fechaDesde.getDate();
+            Date fecha2 = fechaHasta.getDate();
+            String fec1, fec2;
+
+            String dia = String.valueOf(fecha1.getDate()),
+                    mes = String.valueOf(fecha1.getMonth() + 1),
+                    año = String.valueOf(fecha1.getYear() + 1900);
+
+            if (dia.length() < 2) {
+                dia = '0' + dia;
+            }
+            if (mes.length() < 2) {
+                mes = '0' + mes;
+            }
+
+            fec1 = dia + "/" + mes + "/" + año;
+
+            dia = String.valueOf(fecha2.getDate());
+            mes = String.valueOf(fecha2.getMonth() + 1);
+            año = String.valueOf(fecha2.getYear() + 1900);
+
+            if (dia.length() < 2) {
+                dia = '0' + dia;
+            }
+            if (mes.length() < 2) {
+                mes = '0' + mes;
+            }
+
+            fec2 = dia + "/" + mes + "/" + año;
+
+            try {
+                lista = Ticket.consultarIdsPorFecha(fec1, fec2);
+            } catch (SQLException ex) {
+                Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
+            }
+
+            for (int i = 0; i < lista.size(); i++) {
+                fila[0] = lista.get(i).get(0);
+                fila[1] = lista.get(i).get(1);
+                fila[2] = lista.get(i).get(2);
+
+                temp.addRow(fila);
+            }
+
+        }
+    }//GEN-LAST:event_cmd_AplicarFechasActionPerformed
+
+    private void cmd_abrirTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_abrirTicketActionPerformed
+        
+        if (ticketActual != null) {
+
+            ticketActual.abrirTicket();
+            
+        }
+        else{
+            Panel.error("Aviso", "No ha seleccionado ningún ticket");
+        }
+        
+    }//GEN-LAST:event_cmd_abrirTicketActionPerformed
+
+    private void cmd_imprimirTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_imprimirTicketActionPerformed
+        
+        if (ticketActual != null) {
+
+            Panel.aviso("Ticket Creado con Exito", ticketActual.toString());
+            
+        }
+        else{
+            Panel.error("Aviso", "No ha seleccionado ningún ticket");
+        }
+        
+    }//GEN-LAST:event_cmd_imprimirTicketActionPerformed
+
+    private void Tabla_TicketsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Tabla_TicketsMouseClicked
+
+        int fila = Tabla_Tickets.getSelectedRow();
+        DefaultTableModel modelo = (DefaultTableModel) Tabla_Tickets.getModel();
+
+        if (fila > 0 && fila < Tabla_Tickets.getRowCount()) {
+
+            int id = Integer.valueOf((String) modelo.getValueAt(fila, 0));
+
+            //Si es distinto del almacenado
+            if (ticketActual == null || ticketActual.getId() != id) {
+
+                try {
+                    ticketActual = new Ticket(id);
+                    areaTickets.setText(ticketActual.toString());
+                } catch (SQLException ex) {
+                    Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
+                }
+
+
+            }
+
+        }
+
+    }//GEN-LAST:event_Tabla_TicketsMouseClicked
+
+    private void Tabla_TicketsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tabla_TicketsKeyReleased
+
+        //si pulsamos alguna flecha
+        Tabla_TicketsMouseClicked(null);
+
+    }//GEN-LAST:event_Tabla_TicketsKeyReleased
 
     private void insertarLineaVenta(Producto p) {
 
@@ -1726,8 +2103,10 @@ public class PPal extends javax.swing.JFrame {
 
         PanelVender.setVisible(false);
         PanelStock.setVisible(false);
+        PanelTickets.setVisible(false);
         PanelVender.setEnabled(false);
         PanelStock.setEnabled(false);
+        PanelTickets.setEnabled(false);
 
         int width = Panel_Capas.getWidth();
         int height = Panel_Capas.getHeight();
@@ -1882,10 +2261,13 @@ public class PPal extends javax.swing.JFrame {
     private javax.swing.JToolBar Bar_Herramientas;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JPanel PanelStock;
+    private javax.swing.JPanel PanelTickets;
     private javax.swing.JPanel PanelVender;
     private javax.swing.JLayeredPane Panel_Capas;
     private javax.swing.JTable Tabla_Stock;
+    private javax.swing.JTable Tabla_Tickets;
     private javax.swing.JTable Tabla_Vender;
+    private javax.swing.JTextArea areaTickets;
     private javax.swing.JButton cmd_0;
     private javax.swing.JButton cmd_1;
     private javax.swing.JButton cmd_2;
@@ -1897,28 +2279,38 @@ public class PPal extends javax.swing.JFrame {
     private javax.swing.JButton cmd_8;
     private javax.swing.JButton cmd_9;
     private javax.swing.JButton cmd_Aplicar;
+    private javax.swing.JButton cmd_AplicarFechas;
     private javax.swing.JButton cmd_Bajo;
     private javax.swing.JButton cmd_Buscar;
     private javax.swing.JButton cmd_CE;
     private javax.swing.JButton cmd_Stock;
+    private javax.swing.JButton cmd_Tickets;
     private javax.swing.JButton cmd_Todo;
+    private javax.swing.JButton cmd_TodoTickets;
+    private javax.swing.JButton cmd_abrirTicket;
     private javax.swing.JButton cmd_eliminar;
     private javax.swing.JButton cmd_eliminarTodo;
     private javax.swing.JButton cmd_finalizar;
+    private javax.swing.JButton cmd_imprimirTicket;
     private javax.swing.JButton cmd_insertar;
     private javax.swing.JButton cmd_mas;
     private javax.swing.JButton cmd_menos;
     private javax.swing.JButton cmd_punto;
     private javax.swing.JButton cmd_vender;
+    private com.toedter.calendar.JDateChooser fechaDesde;
+    private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel lb_total;
     private javax.swing.JTextField txt_Busqueda;
+    private javax.swing.JLabel txt_Desde;
+    private javax.swing.JLabel txt_Hasta;
     private javax.swing.JTextField txt_insertar;
     // End of variables declaration//GEN-END:variables
 }

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.DocFlavor;
 
 /**
  *
@@ -36,6 +37,7 @@ public class Ticket {
     private String fecha, hora;
     private float total, iva = 21;
     ArrayList<Ticket_Producto> lineasfactura;
+    private static String RUTA_BBDD = "BBDD\\TPV";
 
     public Ticket() throws SQLException {
 
@@ -68,7 +70,7 @@ public class Ticket {
 
     public Ticket(int id) throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados = db.consultar("SELECT * FROM ticket WHERE id=" + id);
 
@@ -82,14 +84,16 @@ public class Ticket {
             this.iva = resultados.getFloat("iva");
 
             lineasfactura = new ArrayList<>();
-
+            
+            resultados.close();
+            
             resultados = db.consultar("SELECT * FROM ticket_producto WHERE idticket=" + id);
             resultados.next();
 
             while (!resultados.isAfterLast()) {
 
-                lineasfactura.add(new Ticket_Producto(id, resultados.getInt("isproducto"),
-                        resultados.getInt("cantidad"), resultados.getInt("precio")));
+                lineasfactura.add(new Ticket_Producto(id, resultados.getInt("idproducto"),
+                        resultados.getInt("cantidad"), resultados.getFloat("precio")));
 
                 resultados.next();
 
@@ -102,7 +106,9 @@ public class Ticket {
             this.id = -1;
             Toolkit.getDefaultToolkit().beep();
         }
+
         resultados.close();
+
     }
 
     public Ticket(List<Ticket_Producto> list) throws SQLException {
@@ -211,7 +217,7 @@ public class Ticket {
             Collections.sort(lineasfactura);
 
 
-            Operaciones db = new Operaciones("BBDD\\TPV");
+            Operaciones db = new Operaciones(RUTA_BBDD);
             String bw = "";
 
             bw += NombreCompañia;
@@ -328,7 +334,7 @@ public class Ticket {
             Collections.sort(lineasfactura);
 
 
-            Operaciones db = new Operaciones("BBDD\\TPV");
+            Operaciones db = new Operaciones(RUTA_BBDD);
 
             BufferedWriter bw = new BufferedWriter(new FileWriter("tickets" + File.separatorChar + "ticket" + id + ".txt"));
 
@@ -432,7 +438,7 @@ public class Ticket {
 
     public static int getNextId() throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados;
 
@@ -445,7 +451,7 @@ public class Ticket {
 
     public void insertar() throws SQLException {
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados = db.consultar("SELECT id FROM ticket WHERE id=" + id);
 
@@ -477,39 +483,46 @@ public class Ticket {
         resultados.close();
     }
 
-    public static ArrayList<Ticket> consultarTodo() throws SQLException {
+    public static ArrayList<ArrayList<String>> consultarIds() throws SQLException {
 
-        ArrayList<Ticket> lista = new ArrayList<>();
-        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<ArrayList<String>> lista = new ArrayList<>();
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
 
         ResultSet resultados;
-
-        resultados = db.consultar("SELECT id FROM ticket");
+        resultados = db.consultar("SELECT * FROM ticket");
 
         resultados.next();
 
         while (!resultados.isAfterLast()) {
-            ids.add(resultados.getInt("id"));
+
+            ArrayList<String> listaAux = new ArrayList<>();
+
+            listaAux.add(String.valueOf(resultados.getInt("id")));
+            String aux = resultados.getString("fecha");
+            String aux2 = "";
+            //esto es por problemas de char(convierte algunos enteros en binario)
+            aux2 += aux.charAt(6);
+            aux2 += (char) aux.charAt(7);
+            aux = aux2 + "/" + aux.charAt(4) + aux.charAt(5) + "/" + aux.charAt(0) + aux.charAt(1) + aux.charAt(2) + aux.charAt(3);
+            listaAux.add(aux);
+            listaAux.add(resultados.getString("hora"));
+
+            lista.add(listaAux);
+
             resultados.next();
         }
 
-        for (int i = 0; i < ids.size(); i++) {
-
-            lista.add(new Ticket(ids.get(i)));
-
-        }
         resultados.close();
+
         return lista;
     }
 
-    public static ArrayList<Ticket> consultarPorFecha(String fecha1, String fecha2) throws SQLException {
+    public static ArrayList<ArrayList<String>> consultarIdsPorFecha(String fecha1, String fecha2) throws SQLException {
 
-        ArrayList<Ticket> lista = new ArrayList<>();
-        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<ArrayList<String>> lista = new ArrayList<>();
 
-        Operaciones db = new Operaciones("BBDD\\TPV");
+        Operaciones db = new Operaciones(RUTA_BBDD);
         ResultSet resultados;
 
         String aux1 = "";
@@ -532,25 +545,52 @@ public class Ticket {
         aux2 += fecha2.charAt(0);
         aux2 += fecha2.charAt(1);
 
-        resultados = db.consultar("SELECT id FROM ticket WHERE fecha>=" + fecha1 + " AND fecha<=" + fecha2);
+        resultados = db.consultar("SELECT * FROM ticket");
 
         resultados.next();
 
         while (!resultados.isAfterLast()) {
-            ids.add(resultados.getInt("id"));
+            ArrayList<String> listaAux = new ArrayList<>();
+
+            listaAux.add(String.valueOf(resultados.getInt("id")));
+            String aux = resultados.getString("fecha");
+            
+            //Comprobamos las fechas, estan en formato YYYYMMDD para poder comparaar directamente
+            if (Integer.valueOf(aux1) <= Integer.valueOf(aux) && Integer.valueOf(aux) <= Integer.valueOf(aux2)) {
+                
+                String aux3 = "";
+
+                //esto es por problemas de char(convierte algunos enteros(char) en binario)
+                aux3 += aux.charAt(6);
+                aux3 += (char) aux.charAt(7);
+                aux = aux3 + "/" + aux.charAt(4) + aux.charAt(5) + "/" + aux.charAt(0) + aux.charAt(1) + aux.charAt(2) + aux.charAt(3);
+                listaAux.add(aux);
+                listaAux.add(resultados.getString("hora"));
+
+                lista.add(listaAux);
+                
+            }
             resultados.next();
         }
 
-        for (int i = 0; i < ids.size(); i++) {
-
-            lista.add(new Ticket(ids.get(i)));
-
-        }
         resultados.close();
+
         return lista;
     }
 
     public Ticket_Producto getLineaFactura(int i) {
         return lineasfactura.get(i);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public String getHora() {
+        return hora;
     }
 }
