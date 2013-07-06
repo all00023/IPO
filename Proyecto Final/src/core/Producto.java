@@ -6,22 +6,26 @@ package core;
 
 import Operaciones.Operaciones;
 import gui.Panel;
+import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.awt.image.PixelGrabber;
-import java.awt.image.WritableRaster;
+import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -34,7 +38,7 @@ public class Producto {
     private int cod_barras, stock, stock_minimo, nVentas;
     private String nombre, formato;
     private float precio;
-    private static String RUTA_BBDD="BBDD\\TPV";
+    private static String RUTA_BBDD = "BBDD\\TPV";
 
     public Producto(int cod_barras, String nombre, float precio, int stock,
             int stock_minimo, String formato, int nVentas) {
@@ -361,12 +365,54 @@ public class Producto {
 
     public static void guardarImagen(Image imagen, int id) throws IOException {
 
-        String file = id + ".jpg";
+        String file = "Imagenes" + File.separator + id + ".jpg";
         File f = new File(file);
 
         BufferedImage b = new BufferedImage(imagen.getWidth(null), imagen.getHeight(null), BufferedImage.TYPE_INT_RGB);
         b.getGraphics().drawImage(imagen, 0, 0, null);
         ImageIO.write(b, "jpg", f);
+       
 
+    }
+
+    public String getRutaImagen() {
+
+        File ruta = new File("Imagenes" + File.separator + (cod_barras) + ".jpg");
+
+        return ruta.getAbsolutePath();
+
+    }
+
+    public Image getImagen() {
+
+        File ruta = new File("Imagenes" + File.separator + (cod_barras) + ".jpg");
+        Image ret = null;
+
+        ret = new ImageIcon("Imagenes/" + cod_barras + ".jpg").getImage();
+
+
+        return ret;
+
+    }
+
+    public static boolean comprobarExistencia(int cod_barras) throws SQLException {
+
+        boolean aux;
+        Operaciones db = new Operaciones(RUTA_BBDD);
+
+        ResultSet resultados = db.consultar("SELECT * FROM productos WHERE cod_barras=" + cod_barras);
+
+
+
+        if (!resultados.isClosed()) {
+
+            aux = true;
+        } else {
+            aux = false;
+        }
+
+        resultados.close();
+
+        return aux;
     }
 }

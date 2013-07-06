@@ -28,11 +28,6 @@ import javax.print.DocFlavor;
  */
 public class Ticket {
 
-    private static String CIF = "A12345678";
-    private static String NombreCompañia = "Alibel";
-    private static String Direccion = "C\\ Falsa 123";
-    private static String Ciudad = "Huelva 21001 ";
-    private static String Provincia = "Huelva";
     private int id;
     private String fecha, hora;
     private float total, iva = 21;
@@ -84,9 +79,9 @@ public class Ticket {
             this.iva = resultados.getFloat("iva");
 
             lineasfactura = new ArrayList<>();
-            
+
             resultados.close();
-            
+
             resultados = db.consultar("SELECT * FROM ticket_producto WHERE idticket=" + id);
             resultados.next();
 
@@ -210,6 +205,8 @@ public class Ticket {
     @Override
     public String toString() {
 
+        ArrayList<String> datos = getConfiguracion();
+
         if (lineasfactura.size() > 0) {
             String nombre = "";
             String aux;
@@ -220,16 +217,16 @@ public class Ticket {
             Operaciones db = new Operaciones(RUTA_BBDD);
             String bw = "";
 
-            bw += NombreCompañia;
+            bw += datos.get(0);
             bw += "\n";
-            bw += CIF;
+            bw += datos.get(1);
             bw += "\n";
             bw += "\n";
-            bw += Direccion;
+            bw += datos.get(2);
             bw += "\n";
-            bw += Ciudad;
+            bw += datos.get(3) + " " + (datos.get(4) == null ? "" : datos.get(4)); //en la base de datos este valor puede ser nulo
             bw += "\n";
-            bw += Provincia;
+            bw += datos.get(5);
             bw += "\n";
             bw += "\n";
             bw += fecha + "  " + hora;
@@ -311,7 +308,7 @@ public class Ticket {
             bw += "                     Total:  " + auxString + " €";
             bw += "\n";
             bw += "\n";
-            bw += "---------21% I.V.A. Incluido---------";
+            bw += "---------" + iva + "% I.V.A. Incluido---------";
 
 
             return bw;
@@ -327,6 +324,8 @@ public class Ticket {
 
     public void imprimir_ticket() throws IOException, SQLException {
 
+        ArrayList<String> datos = getConfiguracion();
+
         if (lineasfactura.size() > 0) {
             String nombre;
             String aux;
@@ -338,16 +337,16 @@ public class Ticket {
 
             BufferedWriter bw = new BufferedWriter(new FileWriter("tickets" + File.separatorChar + "ticket" + id + ".txt"));
 
-            bw.write(NombreCompañia);
+            bw.write(datos.get(0));
             bw.newLine();
-            bw.write(CIF);
+            bw.write(datos.get(1));
             bw.newLine();
             bw.newLine();
-            bw.write(Direccion);
+            bw.write(datos.get(2));
             bw.newLine();
-            bw.write(Ciudad);
+            bw.write(datos.get(3) + " " + (datos.get(4) == null ? "" : datos.get(4))); //en la base de datos este valor puede ser nulo
             bw.newLine();
-            bw.write(Provincia);
+            bw.write(datos.get(5));
             bw.newLine();
             bw.newLine();
             bw.write(fecha + "  " + hora);
@@ -416,7 +415,7 @@ public class Ticket {
             bw.write("                     Total:  " + auxString + " €");
             bw.newLine();
             bw.newLine();
-            bw.write("---------21% I.V.A. Incluido---------");
+            bw.write("---------" + 21 + "% I.V.A. Incluido---------");
 
 
             bw.close();
@@ -478,6 +477,20 @@ public class Ticket {
                         + "," + lineasfactura.get(i).getIdticket() + "," + lineasfactura.get(i).getPrecio()
                         + "," + lineasfactura.get(i).getCantidad() + ")");
 
+                if (lineasfactura.get(i).getCantidad() > 0) {
+
+                    db.insertar("UPDATE productos SET nventas=nventas+" + lineasfactura.get(i).getCantidad() + ",stock=stock-"
+                            + lineasfactura.get(i).getCantidad() + " WHERE cod_barras=" + lineasfactura.get(i).getIdproducto());
+
+                } else {
+
+                    int auxInt=lineasfactura.get(i).getCantidad();
+                    auxInt=Math.abs(auxInt);
+                    
+                    db.insertar("UPDATE productos SET nventas=nventas-" + auxInt + ",stock=stock+"
+                            + auxInt + " WHERE cod_barras=" + lineasfactura.get(i).getIdproducto());
+
+                }
             }
         }
         resultados.close();
@@ -554,10 +567,10 @@ public class Ticket {
 
             listaAux.add(String.valueOf(resultados.getInt("id")));
             String aux = resultados.getString("fecha");
-            
+
             //Comprobamos las fechas, estan en formato YYYYMMDD para poder comparaar directamente
             if (Integer.valueOf(aux1) <= Integer.valueOf(aux) && Integer.valueOf(aux) <= Integer.valueOf(aux2)) {
-                
+
                 String aux3 = "";
 
                 //esto es por problemas de char(convierte algunos enteros(char) en binario)
@@ -568,7 +581,7 @@ public class Ticket {
                 listaAux.add(resultados.getString("hora"));
 
                 lista.add(listaAux);
-                
+
             }
             resultados.next();
         }
@@ -592,5 +605,55 @@ public class Ticket {
 
     public String getHora() {
         return hora;
+    }
+
+    public static void setConfiguracion(ArrayList<String> conf) {
+
+        String nombre = conf.get(0);
+        String cif = conf.get(1);
+        String direccion = conf.get(2);
+        String ciudad = conf.get(3);
+        String cp = conf.get(4);
+        String provincia = conf.get(5);
+
+        Operaciones db = new Operaciones(RUTA_BBDD);
+
+        String aux = "UPDATE configuracion SET nombre='" + nombre + "',cif='" + cif
+                + "',direccion='" + direccion + "',ciudad='" + ciudad + "',provincia='" + provincia
+                + "',cp='" + cp + "'";
+
+        db.insertar(aux);
+
+    }
+
+    public static ArrayList<String> getConfiguracion() {
+
+        ArrayList<String> config = new ArrayList<>();
+
+        try {
+
+            Operaciones db = new Operaciones(RUTA_BBDD);
+            ResultSet resultados = db.consultar("SELECT * FROM configuracion");
+
+            if (!resultados.isClosed()) {
+
+                config.add(resultados.getString("nombre"));
+                config.add(resultados.getString("cif"));
+                config.add(resultados.getString("direccion"));
+                config.add(resultados.getString("ciudad"));
+                config.add(resultados.getString("cp"));
+                config.add(resultados.getString("provincia"));
+
+            }
+
+            resultados.close();
+
+        } catch (SQLException ex) {
+            Panel.error("Error SQL", "Compruebe que ningun programa este usando la base de datos");
+        }
+
+
+        return config;
+
     }
 }

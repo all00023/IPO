@@ -135,6 +135,7 @@ public class EliminarArticulo extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
+        canvas1.setBackground(new java.awt.Color(255, 255, 255));
         canvas1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 canvas1MouseClicked(evt);

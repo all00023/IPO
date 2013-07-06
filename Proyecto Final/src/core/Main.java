@@ -22,40 +22,52 @@ public class Main {
      */
     public static void main(String[] args) throws IOException, SQLException, AWTException {
 
+
+        /*
+         * Este código es para evitar que el programa se ejecute mas de una vez, 
+         * porque daría problemas de SQL
+         */
+
         ServerSocket SERVER_SOCKET;
+        
         try {
             SERVER_SOCKET = new ServerSocket(9582);
+
+            PPal principal = new PPal();
+            principal.setEnabled(true);
+            principal.setVisible(true);
+
         } catch (IOException ex) {
-            Panel.error("ERROR", "Ya hay una instacia del programa abierta.");       
+            Panel.error("ERROR", "Ya hay una instacia del programa abierta.");
         }
-        
-         
-        
+
+
+
         /*
          * Prueba insertar producto en base de datos 
          */
-        
-        
+
+
 //        producto pr=new producto(999, "producto auxiliar", (float)0.0, 5, 2, "vacio");
-        
+
 //        producto.borrarDB(999);
-        
+
 //        pr.insertar();
-        
-        
+
+
         /*
          * Prueba constructor que carga de la base de datos
          */
 //        producto p = new producto(999);
-        
+
 //        System.out.println(p.getCod_barras() + " " + p.getNombre() + " " + p.getFormato() + " " + p.getStock() + " " + p.getStock_minimo() + " " + p.getPrecio());
-        
+
         /*
          * Prueba eliminar un dato de la base de datos
          */
-        
+
 //        producto.borrarDB(999);
-        
+
         /*
          *      Test Imprimir Ticket
          */
@@ -65,16 +77,13 @@ public class Main {
 //        y.insertarLinea(1004, 7, 4);        
 //        y.imprimir_ticket();
 //               
-        
+
 //        EstadoStock estado = new EstadoStock();
 //        estado.setLocation(100, 100);
 //        estado.setEnabled(true);
 //        estado.setVisible(true);
-        PPal principal=new PPal();
-        principal.setEnabled(true);
-        principal.setVisible(true);
-       
-        
-    
+
+
+
     }
 }
