@@ -56,7 +56,7 @@ public class PPal extends javax.swing.JFrame {
 
         initComponents();
 
-        deshabilitarcapas(PanelVender);
+        deshabilitarcapas(PanelPrincipal);
 
     }
 
@@ -190,9 +190,9 @@ public class PPal extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
         PanelPrincipal = new javax.swing.JPanel();
-        label1 = new java.awt.Label();
-        jLabel2 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TPV ALIBEL");
@@ -278,7 +278,7 @@ public class PPal extends javax.swing.JFrame {
 
         cmd_Articulos.setBackground(new java.awt.Color(224, 251, 251));
         cmd_Articulos.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
-        cmd_Articulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/Information.png"))); // NOI18N
+        cmd_Articulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/product.png"))); // NOI18N
         cmd_Articulos.setText("Artículos");
         cmd_Articulos.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cmd_Articulos.setFocusable(false);
@@ -1271,8 +1271,9 @@ public class PPal extends javax.swing.JFrame {
         PanelArticulosLayout.setHorizontalGroup(
             PanelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelArticulosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(PanelArticulosAñadirEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelArticulosEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1453,7 +1454,7 @@ public class PPal extends javax.swing.JFrame {
         jLabel13.setText("Alumnos del proyecto:");
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel14.setText("el tercer curso del Grado de Informática.");
+        jLabel14.setText("el tercer curso del Grado de Informática. Su entrega");
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setText("Adrián Luque Luque        all00023");
@@ -1468,28 +1469,37 @@ public class PPal extends javax.swing.JFrame {
         jButton2.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/ujaen.png"))); // NOI18N
         jButton2.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/ujaen.png"))); // NOI18N
         jButton2.setEnabled(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel17.setText("en en la convocatoria de Julio");
 
         javax.swing.GroupLayout PanelAcercaDeLayout = new javax.swing.GroupLayout(PanelAcercaDe);
         PanelAcercaDe.setLayout(PanelAcercaDeLayout);
         PanelAcercaDeLayout.setHorizontalGroup(
             PanelAcercaDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelAcercaDeLayout.createSequentialGroup()
-                .addGap(140, 140, 140)
+                .addGap(169, 169, 169)
                 .addGroup(PanelAcercaDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel14)
                     .addComponent(jLabel12)
                     .addComponent(jLabel10)
                     .addComponent(jLabel13)
                     .addComponent(jLabel15)
-                    .addComponent(jLabel16))
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         PanelAcercaDeLayout.setVerticalGroup(
             PanelAcercaDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelAcercaDeLayout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addGap(182, 182, 182)
                 .addGroup(PanelAcercaDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelAcercaDeLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
@@ -1498,14 +1508,16 @@ public class PPal extends javax.swing.JFrame {
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel14)
-                        .addGap(56, 56, 56)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel17)
+                        .addGap(28, 28, 28)
                         .addComponent(jLabel13)
-                        .addGap(46, 46, 46)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel16))
                     .addComponent(jButton2))
-                .addContainerGap(290, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         PanelAcercaDe.setBounds(0, 0, 990, 630);
@@ -1513,20 +1525,34 @@ public class PPal extends javax.swing.JFrame {
 
         PanelPrincipal.setBackground(new java.awt.Color(185, 221, 239));
 
-        label1.setText("label1");
-
-        jLabel2.setText("TPV Alibel ver 1.0");
-        jLabel2.setToolTipText("");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/Portada.png"))); // NOI18N
+        jButton3.setBorderPainted(false);
+        jButton3.setContentAreaFilled(false);
+        jButton3.setDefaultCapable(false);
+        jButton3.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/Portada.png"))); // NOI18N
+        jButton3.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/100px/Portada.png"))); // NOI18N
+        jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelPrincipalLayout = new javax.swing.GroupLayout(PanelPrincipal);
         PanelPrincipal.setLayout(PanelPrincipalLayout);
         PanelPrincipalLayout.setHorizontalGroup(
             PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 990, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelPrincipalLayout.createSequentialGroup()
+                .addContainerGap(101, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addGap(30, 30, 30))
         );
         PanelPrincipalLayout.setVerticalGroup(
             PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
+            .addGroup(PanelPrincipalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PanelPrincipal.setBounds(0, 0, 990, 630);
@@ -2926,6 +2952,14 @@ public class PPal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cmd_explorarActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     private void insertarLineaVenta(Producto p) {
 
         DefaultTableModel temp = (DefaultTableModel) Tabla_Vender.getModel();
@@ -3193,6 +3227,7 @@ public class PPal extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3201,7 +3236,7 @@ public class PPal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
@@ -3211,7 +3246,6 @@ public class PPal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private java.awt.Label label1;
     private javax.swing.JLabel lb_cif;
     private javax.swing.JLabel lb_ciudad;
     private javax.swing.JLabel lb_codBarrasArticulo;
