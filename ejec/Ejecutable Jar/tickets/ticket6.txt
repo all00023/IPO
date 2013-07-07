@@ -1,0 +1,22 @@
+Alibel
+A12345678
+
+C\ Falsa 123
+Huelva 21001 
+Huelva
+
+04/07/2013  21:32
+
+=====================================
+Art  Cant  Producto          Precio
+
+1001  3    FORTUNA ROJO BL   4.1 €
+
+1008  1    LUCKY STRIKE RE   4.1 €
+
+1011  2    NOBEL DURO        56.0 €
+=====================================
+
+                     Total:  128.40001 €
+
+---------21% I.V.A. Incluido---------

@@ -6,26 +6,18 @@ package core;
 
 import Operaciones.Operaciones;
 import gui.Panel;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -371,7 +363,16 @@ public class Producto {
         BufferedImage b = new BufferedImage(imagen.getWidth(null), imagen.getHeight(null), BufferedImage.TYPE_INT_RGB);
         b.getGraphics().drawImage(imagen, 0, 0, null);
         ImageIO.write(b, "jpg", f);
-       
+
+
+    }
+
+    public static void eliminarImagen(int id) {
+
+        String file = "Imagenes" + File.separator + id + ".jpg";
+        File f = new File(file);
+
+        f.delete();
 
     }
 
@@ -414,5 +415,20 @@ public class Producto {
         resultados.close();
 
         return aux;
+    }
+
+    public void eliminarBBDD() {
+
+        if (cod_barras > 0) {
+
+            Operaciones db = new Operaciones(RUTA_BBDD);
+
+            boolean resultados = db.insertar("DELETE FROM productos WHERE cod_barras=" + cod_barras);
+            
+            if(resultados){
+                cod_barras=-1;
+            }
+
+        }
     }
 }

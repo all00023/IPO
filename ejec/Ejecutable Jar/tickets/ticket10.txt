@@ -1,0 +1,22 @@
+Alibel
+A12345678
+
+C\ Falsa 123
+Huelva 21001 
+Huelva
+
+04/07/2013  21:44
+
+=====================================
+Art  Cant  Producto          Precio
+
+1001  1    FORTUNA ROJO BL   4.1 €
+
+1011  1    NOBEL DURO        4.1 €
+
+1111  1    DIANA DURO        3.95 €
+=====================================
+
+                     Total:  12.15 €
+
+---------21% I.V.A. Incluido---------

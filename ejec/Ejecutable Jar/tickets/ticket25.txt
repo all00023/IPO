@@ -1,0 +1,18 @@
+Alibel
+A12345678
+
+C\ Falsa 123
+Huelva 21001
+Huelva
+
+06/07/2013  20:23
+
+=====================================
+Art  Cant  Producto          Precio
+
+1004  2    CHESTERFIELD CL   4.2 €
+=====================================
+
+                     Total:  8.4 €
+
+---------21% I.V.A. Incluido---------
